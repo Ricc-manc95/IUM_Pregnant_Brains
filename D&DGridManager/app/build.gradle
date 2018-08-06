@@ -5,7 +5,7 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.unica.pregnantbrains.ddgridmanager"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -28,4 +28,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:design:26.+'
+
+    /**Custom Libraries**/
+    //Speed Dial
+    implementation 'com.leinardi.android:speed-dial:1.0.2'
 }

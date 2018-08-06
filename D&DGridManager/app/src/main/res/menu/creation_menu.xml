@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_create_obstacle"
+        android:icon="@drawable/ic_obstacle_black_24dp"
+        android:title="Obstacle">
+
+    </item>
+
+    <item
+        android:id="@+id/action_add_shape"
+        android:icon="@drawable/ic_shape_black_24dp"
+        android:title="Shape">
+
+    </item>
+
+    <item
+        android:id="@+id/action_draw_line"
+        android:icon="@drawable/ic_line_black_24dp"
+        android:title="Line">
+
+    </item>
+
+</menu>
