@@ -1,8 +1,10 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
+import android.graphics.Color;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenu;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
+import com.leinardi.android.speeddial.FabWithLabelView;
 
 public class Grid extends AppCompatActivity {
 
@@ -30,7 +33,24 @@ public class Grid extends AppCompatActivity {
         setContentView(R.layout.activity_grid);
 
         nSpeedDialView = findViewById(R.id.creation_speed_dial);
-        nSpeedDialView.inflate(R.menu.creation_menu);
+        //nSpeedDialView.inflate(R.menu.creation_menu);
+
+        //AGGIUNGERE CONTROLLO nSpeedDialViwe NOT NULL
+        nSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_obstacle, R.drawable.ic_obstacle_white_24dp)
+                .setLabel(getString(R.string.fab_obstacle))
+                .setTheme(R.style.AppTheme_Fab)
+                .create()
+        );
+        nSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_area, R.drawable.ic_area_white_24dp)
+                .setLabel(getString(R.string.fab_area))
+                .setTheme(R.style.AppTheme_Fab)
+                .create()
+        );
+        nSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_line, R.drawable.ic_line_white_24dp)
+                .setLabel(getString(R.string.fab_line))
+                .setTheme(R.style.AppTheme_Fab)
+                .create()
+        );
 
         nSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
@@ -49,15 +69,15 @@ public class Grid extends AppCompatActivity {
             @Override
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
                 switch (actionItem.getId()) {
-                    case R.id.action_create_obstacle:
+                    case R.id.fab_obstacle:
                         Toast.makeText(Grid.this, "Create Obstacle clicked", Toast.LENGTH_SHORT).show();
                         nSpeedDialView.close();
                         return true;
-                    case R.id.action_add_shape:
-                        Toast.makeText(Grid.this, "Add Shape clicked", Toast.LENGTH_SHORT).show();
+                    case R.id.fab_area:
+                        Toast.makeText(Grid.this, "Add Area clicked", Toast.LENGTH_SHORT).show();
                         nSpeedDialView.close();
                         return true;
-                    case R.id.action_draw_line:
+                    case R.id.fab_line:
                         Toast.makeText(Grid.this, "Draw Line clicked", Toast.LENGTH_SHORT).show();
                         nSpeedDialView.close();
                         return true;

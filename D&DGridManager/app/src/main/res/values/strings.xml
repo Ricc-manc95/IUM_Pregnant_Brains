@@ -3,4 +3,7 @@
     <string name="new_grid_button">New Grid</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="fab_obstacle">Create Obstacle</string>
+    <string name="fab_area">Add Area</string>
+    <string name="fab_line">Draw Line</string>
 </resources>

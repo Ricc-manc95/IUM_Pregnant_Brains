@@ -4,8 +4,10 @@
     android:id="@+id/creation_speed_dial"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:sdMainFabClosedSrc="@drawable/ic_add_black_24dp"
-    app:sdMainFabOpenedSrc="@drawable/ic_pawn_black_24dp"
-    app:sdOverlayLayout="@id/creation_fab_overlay">
+    app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
+    app:sdMainFabOpenedSrc="@drawable/ic_pawn_white_24dp"
+    app:sdOverlayLayout="@id/creation_fab_overlay"
+    app:sdMainFabClosedBackgroundColor="@color/colorPrimaryDark"
+    app:sdMainFabAnimationRotateAngle="135">
 
 </com.leinardi.android.speeddial.SpeedDialView>

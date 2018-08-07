@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/action_create_obstacle"
-        android:icon="@drawable/ic_obstacle_black_24dp"
+        android:icon="@drawable/ic_obstacle_white_24dp"
         android:title="Obstacle">
 
     </item>
 
     <item
         android:id="@+id/action_add_shape"
-        android:icon="@drawable/ic_shape_black_24dp"
-        android:title="Shape">
+        android:icon="@drawable/ic_area_white_24dp"
+        android:title="Area">
 
     </item>
 
     <item
         android:id="@+id/action_draw_line"
-        android:icon="@drawable/ic_line_black_24dp"
+        android:icon="@drawable/ic_line_white_24dp"
         android:title="Line">
 
     </item>
