@@ -6,4 +6,6 @@
     <string name="fab_obstacle">Create Obstacle</string>
     <string name="fab_area">Add Area</string>
     <string name="fab_line">Draw Line</string>
+    <string name="header_image">Header Icon</string>
+    <string name="header_title">Header Title</string>
 </resources>

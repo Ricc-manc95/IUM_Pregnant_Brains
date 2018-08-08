@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,37 +23,39 @@ public class Grid extends AppCompatActivity {
 
     private static final String TAG = Grid.class.getSimpleName();
 
-    private DrawerLayout nDrawerLayout;
-    private ActionBarDrawerToggle nToggle;
-    private Toolbar nToolbar;
-    private SpeedDialView nSpeedDialView;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private Toolbar mToolbar;
+    private SpeedDialView mSpeedDialView;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
 
-        nSpeedDialView = findViewById(R.id.creation_speed_dial);
+        /**FAB & Speed Dial*/
+        mSpeedDialView = findViewById(R.id.creation_speed_dial);
         //nSpeedDialView.inflate(R.menu.creation_menu);
 
         //AGGIUNGERE CONTROLLO nSpeedDialViwe NOT NULL
-        nSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_obstacle, R.drawable.ic_obstacle_white_24dp)
+        mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_obstacle, R.drawable.ic_obstacle_white_24dp)
                 .setLabel(getString(R.string.fab_obstacle))
                 .setTheme(R.style.AppTheme_Fab)
                 .create()
         );
-        nSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_area, R.drawable.ic_area_white_24dp)
+        mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_area, R.drawable.ic_area_white_24dp)
                 .setLabel(getString(R.string.fab_area))
                 .setTheme(R.style.AppTheme_Fab)
                 .create()
         );
-        nSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_line, R.drawable.ic_line_white_24dp)
+        mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_line, R.drawable.ic_line_white_24dp)
                 .setLabel(getString(R.string.fab_line))
                 .setTheme(R.style.AppTheme_Fab)
                 .create()
         );
 
-        nSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {
                 Toast.makeText(Grid.this, "Create Pawn clicked", Toast.LENGTH_SHORT).show();
@@ -65,21 +68,21 @@ public class Grid extends AppCompatActivity {
             }
         });
 
-        nSpeedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+        mSpeedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
             @Override
             public boolean onActionSelected(SpeedDialActionItem actionItem) {
                 switch (actionItem.getId()) {
                     case R.id.fab_obstacle:
                         Toast.makeText(Grid.this, "Create Obstacle clicked", Toast.LENGTH_SHORT).show();
-                        nSpeedDialView.close();
+                        mSpeedDialView.close();
                         return true;
                     case R.id.fab_area:
                         Toast.makeText(Grid.this, "Add Area clicked", Toast.LENGTH_SHORT).show();
-                        nSpeedDialView.close();
+                        mSpeedDialView.close();
                         return true;
                     case R.id.fab_line:
                         Toast.makeText(Grid.this, "Draw Line clicked", Toast.LENGTH_SHORT).show();
-                        nSpeedDialView.close();
+                        mSpeedDialView.close();
                         return true;
                     default:
                             break;
@@ -88,7 +91,7 @@ public class Grid extends AppCompatActivity {
             }
         });
 
-        nSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {
                 Toast.makeText(Grid.this, "Create Pawn clicked", Toast.LENGTH_SHORT).show();
@@ -101,34 +104,72 @@ public class Grid extends AppCompatActivity {
             }
         });
 
-        nToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
-        setSupportActionBar(nToolbar);
+        /**Toolbar*/
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
 
-        nDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        nToggle = new ActionBarDrawerToggle(this, nDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
-        nDrawerLayout.addDrawerListener(nToggle);
-        nToggle.syncState();
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setUpNavigationView();
+    }
+
+    private void setUpNavigationView() {
+        //Navigation View item listener
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            //Method will trigger on item Click
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //Check wich item was being clicked
+                switch (menuItem.getItemId()){
+                    case R.id.nav_save:
+                        Toast.makeText(Grid.this, "Save Grid clicked", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_load:
+                        Toast.makeText(Grid.this, "Load Grid clicked", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_settings:
+                        Toast.makeText(Grid.this, "Settings clicked", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_guide:
+                        Toast.makeText(Grid.this, "App Guide clicked", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (nToggle.onOptionsItemSelected(item)) {
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /**Closing Speed Dial & Drawer on back pressed*/
     @Override
     public void onBackPressed() {
-        if (nSpeedDialView.isOpen()) {
-            nSpeedDialView.close();
-        } else if (this.nDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.nDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mSpeedDialView.isOpen()) {
+            mSpeedDialView.close();
+        } else if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
