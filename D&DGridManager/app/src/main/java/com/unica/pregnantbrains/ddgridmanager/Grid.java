@@ -1,5 +1,6 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ public class Grid extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
 
+        Intent intent = getIntent();
+
         /**FAB & Speed Dial*/
         mSpeedDialView = findViewById(R.id.creation_speed_dial);
         //nSpeedDialView.inflate(R.menu.creation_menu);
@@ -58,7 +61,8 @@ public class Grid extends AppCompatActivity {
         mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
             @Override
             public boolean onMainActionSelected() {
-                Toast.makeText(Grid.this, "Create Pawn clicked", Toast.LENGTH_SHORT).show();
+                newPawn();
+                mSpeedDialView.close();
                 return true;
             }
 
@@ -91,19 +95,6 @@ public class Grid extends AppCompatActivity {
             }
         });
 
-        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
-            @Override
-            public boolean onMainActionSelected() {
-                Toast.makeText(Grid.this, "Create Pawn clicked", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            @Override
-            public void onToggleChanged(boolean isOpen) {
-                Log.d(TAG, "Speed dial toggle state changed. Open = " + isOpen);
-            }
-        });
-
         /**Toolbar*/
         mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
         setSupportActionBar(mToolbar);
@@ -117,6 +108,11 @@ public class Grid extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setUpNavigationView();
+    }
+
+    private void newPawn() {
+        Intent newPawnIntent = new Intent(this, PawnCreation.class);
+        startActivity(newPawnIntent);
     }
 
     private void setUpNavigationView() {
@@ -143,6 +139,14 @@ public class Grid extends AppCompatActivity {
                         break;
                     case R.id.nav_guide:
                         Toast.makeText(Grid.this, "App Guide clicked", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_about_us:
+                        Toast.makeText(Grid.this, "About Us clicked", Toast.LENGTH_SHORT).show();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_license:
+                        Toast.makeText(Grid.this, "License clicked", Toast.LENGTH_SHORT).show();
                         mDrawerLayout.closeDrawers();
                         break;
                     default:
