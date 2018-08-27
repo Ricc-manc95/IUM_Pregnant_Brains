@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/creation_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/nav_action_bar"
+    android:layout_height="96dp"
     android:background="@color/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <android.support.design.widget.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|start"
+        android:hint="@string/pawn_name_hint" />
 
 </android.support.v7.widget.Toolbar>
