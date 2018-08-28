@@ -1,0 +1,54 @@
+// Decompiled by Jad v1.5.8e. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.geocities.com/kpdus/jad.html
+// Decompiler options: braces fieldsfirst space lnc 
+
+package com.google.api.services.calendar.model;
+
+import com.google.api.client.json.GenericJson;
+import com.google.api.client.util.GenericData;
+import java.util.List;
+
+// Referenced classes of package com.google.api.services.calendar.model:
+//            DetailedLayoutSection, CalendarGoTo, FormattedText
+
+public final class DetailedLayout extends GenericJson
+{
+
+    public DetailedLayoutSection collapsedSection;
+    public List detailImageWithTexts;
+    public List detailSections;
+    public List images;
+    public CalendarGoTo subtitleLink;
+    public FormattedText subtitleText;
+    public FormattedText title;
+
+    public DetailedLayout()
+    {
+    }
+
+    public final volatile GenericJson clone()
+    {
+        return (DetailedLayout)clone();
+    }
+
+    public final volatile GenericData clone()
+    {
+        return (DetailedLayout)clone();
+    }
+
+    public final Object clone()
+        throws CloneNotSupportedException
+    {
+        return (DetailedLayout)super.clone();
+    }
+
+    public final volatile GenericJson set(String s, Object obj)
+    {
+        return (DetailedLayout)set(s, obj);
+    }
+
+    public final GenericData set(String s, Object obj)
+    {
+        return (DetailedLayout)super.set(s, obj);
+    }
+}

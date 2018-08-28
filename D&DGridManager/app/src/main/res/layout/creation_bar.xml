@@ -2,14 +2,65 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/creation_bar"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-    <android.support.design.widget.TextInputEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom|start"
-        android:hint="@string/pawn_name_hint" />
+    android:theme="@style/CreationBarTheme">
 
 </android.support.v7.widget.Toolbar>
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/creation_bar"
+        android:layout_weight="0.000000"
+        android:elevation="4dp"
+        style="@style/EditTextToolbar">
+
+        <LinearLayout
+            android:layout_gravity="0x800075"
+            android:orientation="0"
+            android:id="@ref/0x7f10018a"
+            android:layout_width="-1"
+            android:layout_height="-1">
+
+            <LinearLayout
+                android:orientation="0"
+                android:id="@ref/0x7f10018b"
+                android:focusableInTouchMode="true"
+                android:layout_width="-1"
+                android:layout_height="-1"
+                android:layout_weight="1065353216.000000"
+                android:importantForAccessibility="2">
+
+                <EditText
+                    android:id="@ref/0x7f10018c"
+                    android:layout_weight="1065353216.000000"
+                    style="@style/EditTextToolbarEditText" />
+
+                <com.google.android.calendar.common.view.ClickTargetFrameLayout
+                    android:layout_gravity="0x10"
+                    android:id="@ref/0x7f10018d"
+                    android:focusable="true"
+                    android:layout_width="dimension(12289)"
+                    android:layout_height="dimension(12289)"
+                    android:layout_weight="0.000000"
+                    android:contentDescription="@ref/0x7f130052"
+                    android:layout_marginEnd="@ref/0x7f0e0146">
+
+                    <ImageButton
+                        android:layout_gravity="0x11"
+                        android:layout_width="-2"
+                        android:layout_height="-2"
+                        android:src="@ref/0x7f0201d9"
+                        style="@style/CalendarButton" />
+                </com.google.android.calendar.common.view.ClickTargetFrameLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@ref/0x7f10018e"
+                android:layout_weight="0.000000"
+                style="@style/EditTextToolbarToolbarRightButton" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+    -->

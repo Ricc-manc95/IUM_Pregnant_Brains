@@ -16,4 +16,10 @@
         <item name="colorControlHighlight">@color/material_orange_400</item>
     </style>
 
+    <style name="CreationBarTheme" parent="AppTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
+    </style>
+
+    <style name="CreationToolbarTheme" parent="AppTheme" />
+
 </resources>

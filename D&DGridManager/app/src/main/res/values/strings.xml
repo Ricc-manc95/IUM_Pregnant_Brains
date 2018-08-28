@@ -9,4 +9,5 @@
     <string name="header_image">Header Icon</string>
     <string name="header_title">Header Title</string>
     <string name="pawn_name_hint">Insert name</string>
+    <string name="creation_save">SAVE</string>
 </resources>
