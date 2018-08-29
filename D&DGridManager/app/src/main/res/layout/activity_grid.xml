@@ -34,6 +34,11 @@
 
         </include>
 
+        <ImageView
+            android:id="@+id/myimageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

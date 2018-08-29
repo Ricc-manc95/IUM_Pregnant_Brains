@@ -1,7 +1,12 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenu;
@@ -14,21 +19,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.leinardi.android.speeddial.FabWithLabelView;
+import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
+import com.unica.pregnantbrains.ddgridmanager.view.CombatGrid;
+import com.unica.pregnantbrains.ddgridmanager.view.GridCanvas;
 
 public class Grid extends AppCompatActivity {
 
     private static final String TAG = Grid.class.getSimpleName();
+    private static final float INITIAL_ZOOM = 1.0f;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private SpeedDialView mSpeedDialView;
     private NavigationView mNavigationView;
+    private Canvas canvas;
+    private Bitmap mBitmap;
+    private ImageView mImageView;
+    private Rect mRect = new Rect();
+    private Rect mBounds = new Rect();
+    private CoordinateTransformer transformer;
+    CombatGrid grid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +126,30 @@ public class Grid extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setUpNavigationView();
+
+        transformer = new CoordinateTransformer(0,0, INITIAL_ZOOM);
+        ui(mDrawerLayout);
+    }
+
+    private void ui (View view) {
+        mBitmap =  Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        mImageView.setImageBitmap(mBitmap);
+        canvas = new Canvas(mBitmap);
+        draw(canvas, canvas.getClipBounds());
+    }
+
+    private void draw(Canvas canvas, Rect bounds) {
+        PointF wsOrigin = transformer.screenSpaceToWorldSpace(bounds.left, bounds.top);
+        float wsWidth = transformer.screenSpaceToWorldSpace(bounds.width());
+        float wsHeight = transformer.screenSpaceToWorldSpace(bounds.height());
+        RectF worldSpaceBounds = new RectF(wsOrigin.x, wsOrigin.y, wsOrigin.x + wsWidth, wsOrigin.y + wsHeight);
+
+        grid.drawBackground(canvas);
+
+        canvas.save();
+        grid.drawToCanvas(canvas, transformer);
+        canvas.save();
+        //CoordinateTransformer gridSpace = grid.gridSpaceToScreenSpaceTransformer(transformer);
     }
 
     private void newPawn() {
