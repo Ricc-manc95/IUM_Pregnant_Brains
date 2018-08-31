@@ -14,7 +14,7 @@ public class GridsList extends AppCompatActivity {
     }
 
     public void newGrid(View view) {
-        Intent intent = new Intent(this, Grid.class);
+        Intent intent = new Intent(this, CombatGrid.class);
         startActivity(intent);
     }
 }
