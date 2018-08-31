@@ -48,6 +48,8 @@ public class Grid extends AppCompatActivity {
     private CoordinateTransformer transformer;
     CombatGrid grid;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,8 +134,13 @@ public class Grid extends AppCompatActivity {
     }
 
     private void ui (View view) {
-        mBitmap =  Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        mImageView.setImageBitmap(mBitmap);
+        /*Bitmap bitmap =
+                Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);*/
+
+
+        mBitmap =  Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        //mImageView.setImageBitmap(mBitmap);
         canvas = new Canvas(mBitmap);
         draw(canvas, canvas.getClipBounds());
     }
