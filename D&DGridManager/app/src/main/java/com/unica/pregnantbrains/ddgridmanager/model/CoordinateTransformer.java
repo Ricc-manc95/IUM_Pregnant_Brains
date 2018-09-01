@@ -1,269 +1,60 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
-import android.graphics.Canvas;
 import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.RectF;
-
-import com.google.common.collect.Lists;
-
-import java.util.List;
 
 /**
  * Defines a transformation from one 2D coordinate system to another coordinate
- * system. The class is written in terms of a world space/screen space
- * conversion.
+ * system.
  *
- * @author Tim Bocek
+ * @author Pregnant Brains
  *
  */
 public final class CoordinateTransformer {
+    public float zoomLevel = 1.0f;
+    public float originX = 0.0f;
+    public float originY = 0.0f;
 
     /**
-     * Upper-left corner's x coordinate in screen space.
-     */
-    private float mOriginX;
-
-    /**
-     * Upper-left corner's y coordinate in screen space.
-     */
-    private float mOriginY;
-
-    /**
-     * Conversion of lengths in world space to lengths in screen space.
-     */
-    private float mZoomLevel;
-
-    /**
-     * Constructor.
+     * @param p
+     *         point to transform
+     * @return
+     *         point transformed
      *
-     * @param originX
-     *            X coordinate of the screen space origin.
-     * @param originY
-     *            Y coordinate of the screen space origin.
-     * @param zoomLevel
-     *            Conversion of world space to screen space lengths.
      */
-    public CoordinateTransformer(final float originX, final float originY, final float zoomLevel) {
-        this.mOriginX = originX;
-        this.mOriginY = originY;
-        this.mZoomLevel = zoomLevel;
+    public PointF worldSpaceToScreenSpace(PointF p) {
+        return new PointF(zoomLevel * p.x + originX, zoomLevel * p.y + originY);
     }
 
     /**
-     * Copy Constructor
-     */
-    public CoordinateTransformer(CoordinateTransformer other) {
-        this.mOriginX = other.mOriginX;
-        this.mOriginY = other.mOriginY;
-        this.mZoomLevel = other.mZoomLevel;
-    }
-
-    /**
-     * Given a mapping between (x, y) -> (x', y') and a mapping between (x', y')
-     * -> (x'', y''), returns a CoordinateTransformer that maps (x, y) -> (x'',
-     * y'').
+     * @param p
+     *         point to transform
+     * @return
+     *         point transformed
      *
-     * @param second
-     *            The other transformation to compose this transformation with.
-     * @return The composed transformation.
      */
-    public CoordinateTransformer compose(final CoordinateTransformer second) {
-        return new CoordinateTransformer(second.worldSpaceToScreenSpace(this.mOriginX) + second.mOriginX,second.worldSpaceToScreenSpace(this.mOriginY) + second.mOriginY,this.mZoomLevel * second.mZoomLevel);
+    public PointF screenSpaceToWorldSpace(PointF p) {
+        return new PointF((p.x - originX) / zoomLevel, (p.y - originY) / zoomLevel);
     }
 
     /**
-     * Returns the upper-left-hand corner of the screen in screen space.
+     * @param f
+     *         distance to transform
+     * @return
+     *         distance transformed
      *
-     * @return The origin.
      */
-    public PointF getOrigin() {
-        return new PointF(this.mOriginX, this.mOriginY);
+    public float worldSpaceToScreenSpace(float f) {
+        return f * zoomLevel;
     }
 
     /**
-     * Moves the origin by the specified amount.
+     * @param f
+     *         distance to transform
+     * @return
+     *         distance transformed
      *
-     * @param dx
-     *            Amount to move in x dimension.
-     * @param dy
-     *            Amount to move in y dimension.
      */
-    public void moveOrigin(final float dx, final float dy) {
-        this.mOriginX += dx;
-        this.mOriginY += dy;
-    }
-
-    /**
-     * Converts the given distance in screen space to world space.
-     *
-     * @param d
-     *            Distance in screen space.
-     * @return Distance in world space.
-     */
-    public float screenSpaceToWorldSpace(final float d) {
-        return d / this.mZoomLevel;
-    }
-
-    /**
-     * Converts the given point in screen space to world space.
-     *
-     * @param x
-     *            X coordinate in screen space.
-     * @param y
-     *            Y coordinate in screen space.
-     * @return The coordinate in world space.
-     */
-    public PointF screenSpaceToWorldSpace(final float x, final float y) {
-        return new PointF((x - this.mOriginX) / this.mZoomLevel,  (y - this.mOriginY) / this.mZoomLevel);
-    }
-
-
-    /**
-     * Converts the given point in screen space to world space.
-     *
-     * @param sscoord
-     *            The coordinate in screen space.
-     * @return The coordinate in world space.
-     */
-    public PointF screenSpaceToWorldSpace(final PointF sscoord) {
-        return this.screenSpaceToWorldSpace(sscoord.x, sscoord.y);
-    }
-
-    /**
-     * Uses an inverse of this coordinate transform object to modify the given
-     * canvas's draw transformation matrix.
-     *
-     * @param c
-     *            The canvas to modify
-     */
-    public void setInverseMatrix(Canvas c) {
-        c.scale(1 / this.mZoomLevel, 1 / this.mZoomLevel);
-        c.translate(-this.mOriginX, -this.mOriginY);
-    }
-
-    /**
-     * Uses this coordinate transform object to modify the given canvas's draw
-     * transformation matrix.
-     *
-     * @param c
-     *            The canvas to modify
-     */
-    public void setMatrix(Canvas c) {
-        c.translate(this.mOriginX, this.mOriginY);
-        c.scale(this.mZoomLevel, this.mZoomLevel);
-    }
-
-    /**
-     * Converts the given distance in world space to screen space.
-     *
-     * @param d
-     *            Distance in world space.
-     * @return Distance in screen space.
-     */
-    public float worldSpaceToScreenSpace(final float d) {
-        return d * this.mZoomLevel;
-    }
-
-    /**
-     * Converts the given point in world space to screen space.
-     *
-     * @param x
-     *            X coordinate in world space.
-     * @param y
-     *            Y coordinate in world space.
-     * @return The coordinate in screen space.
-     */
-    public PointF worldSpaceToScreenSpace(final float x, final float y) {
-        return new PointF(this.mZoomLevel * x + this.mOriginX, this.mZoomLevel
-                * y + this.mOriginY);
-    }
-
-    /**
-     * Converts the given point in world space to screen space.
-     *
-     * @param wscoord
-     *            The coordinate in world space.
-     * @return The coordinate in screen space.
-     */
-    public PointF worldSpaceToScreenSpace(final PointF wscoord) {
-        return this.worldSpaceToScreenSpace(wscoord.x, wscoord.y);
-    }
-
-    public Rect worldSpaceToScreenSpace(final RectF wsrect) {
-        PointF topLeft = worldSpaceToScreenSpace(wsrect.left, wsrect.top);
-        PointF bottomRight = worldSpaceToScreenSpace(wsrect.right, wsrect.bottom);
-        return new Rect((int)topLeft.x, (int)topLeft.y, (int)bottomRight.x, (int)bottomRight.y);
-    }
-
-    /**
-     * Changes the scale of the transformation.
-     *
-     * @param scaleFactor
-     *            Amount to change the zoom level by
-     * @param invariant
-     *            Screen space point that should map to the same world space
-     *            point before and after the transformation.
-     */
-    public void zoom(final float scaleFactor, final PointF invariant) {
-        float lastZoomLevel = this.mZoomLevel;
-        float lastOriginX = this.mOriginX;
-        float lastOriginY = this.mOriginY;
-
-        this.mZoomLevel *= scaleFactor;
-
-        // Change the origin so that we zoom around the focus point.
-        // Derived by assuming that the focus point should map to the same point
-        // in world space before and after the zoom.
-        this.mOriginX =
-                invariant.x - (invariant.x - lastOriginX) * this.mZoomLevel
-                        / lastZoomLevel;
-        this.mOriginY =
-                invariant.y - (invariant.y - lastOriginY) * this.mZoomLevel
-                        / lastZoomLevel;
-
-    }
-/*
-    /**
-     * Creates a list of coordinate transformers that splits the map into a grid of sub-maps.
-     * @param width The width of the map in world space.
-     * @param height The height of the map in world space.
-     * @param numHorizontal The number of horizontal submaps.
-     * @param numVertical The number of vertical submaps.
-     * @return The list of coordinate transformers.
-     */
-    public List<CoordinateTransformer> splitMap(
-            float width, float height, int numHorizontal, int numVertical) {
-        List<CoordinateTransformer> transformers = Lists.newArrayList();
-
-        float submapWidth = (width / numHorizontal);
-        float submapHeight = (height / numVertical);
-
-        for (int j = 0; j < numVertical; ++j) {
-            for (int i = 0; i < numHorizontal; ++i) {
-                transformers.add(new CoordinateTransformer(
-                        this.mOriginX - submapWidth * i,
-                        this.mOriginY - submapHeight * j,
-                        this.mZoomLevel));
-            }
-        }
-
-        return transformers;
-    }
-
-    public RectF screenSpaceToWorldSpace(RectF r) {
-        PointF topLeft = screenSpaceToWorldSpace(r.left, r.top);
-        PointF bottomRight = screenSpaceToWorldSpace(r.right, r.bottom);
-        return new RectF(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
-    }
-
-    public void zoomToFit(BoundingRectangle worldSpaceBounds, int screenWidth, int screenHeight) {
-        // Prevent divide by 0.
-        if (worldSpaceBounds.getWidth() == 0 || worldSpaceBounds.getHeight() == 0) return;
-
-        this.mZoomLevel = Math.min(screenWidth / worldSpaceBounds.getWidth(), screenHeight / worldSpaceBounds.getHeight());
-        this.mOriginX = -this.mZoomLevel * worldSpaceBounds.getXMin();
-        this.mOriginY = -this.mZoomLevel * worldSpaceBounds.getYMin();
-
+    public float screenSpaceToWorldSpace(float f) {
+        return f / zoomLevel;
     }
 }

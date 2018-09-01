@@ -1,12 +1,10 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.google.common.collect.Lists;
-import com.unica.pregnantbrains.ddgridmanager.model.Units;
 
 import java.util.List;
 
