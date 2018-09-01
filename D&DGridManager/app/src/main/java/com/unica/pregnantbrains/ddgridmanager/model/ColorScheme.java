@@ -20,11 +20,11 @@ public final class ColorScheme {
      * name. If the scheme is not found, returns the standard grey-on-white
      * color scheme.
      *
-     * @param name
+     * @param //name
      *            The name of the scheme to use.
      * @return The color scheme.
      */
-    public static ColorScheme fromNamedScheme(final String name) {
+    public static ColorScheme fromNamedScheme(/*final String name*/) {
         /*if (name.equals("Graph Paper")) {
             return GRAPH_PAPER;
         }

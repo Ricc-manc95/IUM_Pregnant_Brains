@@ -5,6 +5,10 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 /**
  * Defines a transformation from one 2D coordinate system to another coordinate
  * system. The class is written in terms of a world space/screen space
@@ -18,17 +22,17 @@ public final class CoordinateTransformer {
     /**
      * Upper-left corner's x coordinate in screen space.
      */
-    private float mOriginX = 0.0f;
+    private float mOriginX;
 
     /**
      * Upper-left corner's y coordinate in screen space.
      */
-    private float mOriginY = 0.0f;
+    private float mOriginY;
 
     /**
      * Conversion of lengths in world space to lengths in screen space.
      */
-    private float mZoomLevel = 1.0f;
+    private float mZoomLevel;
 
     /**
      * Constructor.
@@ -40,8 +44,7 @@ public final class CoordinateTransformer {
      * @param zoomLevel
      *            Conversion of world space to screen space lengths.
      */
-    public CoordinateTransformer(final float originX, final float originY,
-                                 final float zoomLevel) {
+    public CoordinateTransformer(final float originX, final float originY, final float zoomLevel) {
         this.mOriginX = originX;
         this.mOriginY = originY;
         this.mZoomLevel = zoomLevel;
@@ -66,10 +69,7 @@ public final class CoordinateTransformer {
      * @return The composed transformation.
      */
     public CoordinateTransformer compose(final CoordinateTransformer second) {
-        return new CoordinateTransformer(
-                second.worldSpaceToScreenSpace(this.mOriginX) + second.mOriginX,
-                second.worldSpaceToScreenSpace(this.mOriginY) + second.mOriginY,
-                this.mZoomLevel * second.mZoomLevel);
+        return new CoordinateTransformer(second.worldSpaceToScreenSpace(this.mOriginX) + second.mOriginX,second.worldSpaceToScreenSpace(this.mOriginY) + second.mOriginY,this.mZoomLevel * second.mZoomLevel);
     }
 
     /**
@@ -115,8 +115,7 @@ public final class CoordinateTransformer {
      * @return The coordinate in world space.
      */
     public PointF screenSpaceToWorldSpace(final float x, final float y) {
-        return new PointF((x - this.mOriginX) / this.mZoomLevel,
-                (y - this.mOriginY) / this.mZoomLevel);
+        return new PointF((x - this.mOriginX) / this.mZoomLevel,  (y - this.mOriginY) / this.mZoomLevel);
     }
 
 
@@ -232,7 +231,7 @@ public final class CoordinateTransformer {
      * @param numHorizontal The number of horizontal submaps.
      * @param numVertical The number of vertical submaps.
      * @return The list of coordinate transformers.
-     *
+     */
     public List<CoordinateTransformer> splitMap(
             float width, float height, int numHorizontal, int numVertical) {
         List<CoordinateTransformer> transformers = Lists.newArrayList();
@@ -251,7 +250,7 @@ public final class CoordinateTransformer {
 
         return transformers;
     }
-*/
+
     public RectF screenSpaceToWorldSpace(RectF r) {
         PointF topLeft = screenSpaceToWorldSpace(r.left, r.top);
         PointF bottomRight = screenSpaceToWorldSpace(r.right, r.bottom);

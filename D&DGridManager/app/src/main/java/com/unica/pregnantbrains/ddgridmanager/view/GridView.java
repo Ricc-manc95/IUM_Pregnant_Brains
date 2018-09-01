@@ -224,8 +224,8 @@ public class GridView extends SurfaceView {
     private void drawOnCanvas(final Canvas canvas, final Rect dirty) {
         new GridDrawer()
                 .drawGridLines(true)
-                .drawTokens(true)
-                .areTokensManipulable(this.mAreTokensManipulable)
+                //.drawTokens(true)
+                //.areTokensManipulable(this.mAreTokensManipulable)
                 .draw(canvas, this.getData(), dirty);
 
         this.mInteractionMode.draw(canvas);
@@ -431,12 +431,11 @@ public class GridView extends SurfaceView {
      */
     public void setData(final GridData data) {
 
-        boolean useBackgroundLines =
-                (this.mData == null)
-                        || this.mActiveLines == this.mData.getBackgroundLines();
+        /*boolean useBackgroundLines = (this.mData == null) ||
+                this.mActiveLines == this.mData.getBackgroundLines();*/
         this.mData = data;
-        //this.mActiveLines = useBackgroundLines ? this.mData.getBackgroundLines() : this.mData.getAnnotationLines();
-        //this.alertTokensChanged();
+        /*this.mActiveLines = useBackgroundLines ? this.mData.getBackgroundLines() : this.mData.getAnnotationLines();
+        //this.alertTokensChanged();*/
     }
     /**
      * Sets the interaction mode to drawing lines.

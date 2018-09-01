@@ -24,7 +24,7 @@ public class GridData {
     /**
      * The grid to draw.
      */
-    private Grid mGrid = new Grid();
+    private Grid mGrid = Grid.createGrid(new DrawStrategy(), new ColorScheme(ColorScheme.STANDARD.getBackgroundColor(), ColorScheme.STANDARD.getLineColor()), new CoordinateTransformer(0, 0, 64));;
     /**
      * Transformation from world space to screen space.
      */

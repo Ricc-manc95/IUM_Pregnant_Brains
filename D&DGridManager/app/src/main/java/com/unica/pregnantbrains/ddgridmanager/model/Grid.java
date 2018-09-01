@@ -5,7 +5,7 @@ import android.graphics.PointF;
 
 public class Grid {
     /**
-            * The color scheme to use when drawing this grid.
+     * The color scheme to use when drawing this grid.
      */
     private ColorScheme mColorScheme = ColorScheme.STANDARD;
 
@@ -40,8 +40,8 @@ public class Grid {
      */
     public static Grid createGrid(final DrawStrategy strategy, final ColorScheme colorScheme, final CoordinateTransformer transformer) {
         Grid g = new Grid();
-        g.mDrawStrategy = strategy;
-        g.mColorScheme = colorScheme;
+        g.setDrawStrategy(strategy);
+        g.setColorScheme(colorScheme);
         g.mGridToWorldTransformer = transformer;
         return g;
     }
@@ -56,7 +56,7 @@ public class Grid {
      */
     public final void draw(final Canvas canvas, final CoordinateTransformer transformer) {
         CoordinateTransformer tmpTransformer = this.gridSpaceToScreenSpaceTransformer(transformer);
-        this.mDrawStrategy.drawGrid(canvas, tmpTransformer, this.mColorScheme);
+        this.getDrawStrategy().drawGrid(canvas, tmpTransformer, this.mColorScheme);
     }
     /**
      * Fills the canvas with the background color.
@@ -71,7 +71,7 @@ public class Grid {
      * @return The color to use when drawing the background.
      */
     protected final int getBackgroundColor() {
-        return this.mColorScheme.getBackgroundColor();
+        return this.getColorScheme().getBackgroundColor();
     }
 
     public ColorScheme getColorScheme() {

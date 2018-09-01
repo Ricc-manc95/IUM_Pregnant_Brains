@@ -53,9 +53,8 @@ public class GridDrawer {
         canvas.restore();
 
         canvas.save();
-        CoordinateTransformer gridSpace =
-                m.getGrid().gridSpaceToScreenSpaceTransformer(mTransformer);
-        /*if (this.mDrawTokens) {
+        /*CoordinateTransformer gridSpace = m.getGrid().gridSpaceToScreenSpaceTransformer(mTransformer);
+        if (this.mDrawTokens) {
             m.getTokens().drawAllTokens(canvas, gridSpace,
                     m.getGrid().isDark(), this.mAreTokensManipulable);
         }*/
@@ -69,18 +68,6 @@ public class GridDrawer {
 
     public GridDrawer drawTokens(boolean val) {
         this.mDrawTokens = val;
-        return this;
-    }
-
-    /**
-     * Sets the coordinate transformer to use instead of the default coordinate transformer that
-     * is present in the map data.
-     *
-     * @param transformer The transformer to use for world space.
-     * @return this instance for chaining calls.
-     */
-    public GridDrawer useCustomWorldSpaceTransformer(CoordinateTransformer transformer) {
-        mTransformer = transformer;
         return this;
     }
 }

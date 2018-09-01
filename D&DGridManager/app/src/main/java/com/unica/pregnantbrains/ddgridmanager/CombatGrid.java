@@ -34,7 +34,7 @@ public class CombatGrid extends AppCompatActivity {
     /**
      * The current map.
      */
-    private static GridData mData;
+    private static GridData mData = new GridData();
     /**
      * The view that manages the main canvas for drawing and tokens.
      */
@@ -76,15 +76,8 @@ public class CombatGrid extends AppCompatActivity {
 
         if (this.getApplicationContext() == null) return;
 
-        initializeUi();
+        initializeGrid();
 
-
-    }
-
-    private void initializeUi() {
-
-        // Set up the tabs
-        this.setContentView(R.layout.activity_combat_grid);
         /***/
         /**FAB & Speed Dial*/
         mSpeedDialView = findViewById(R.id.creation_speed_dial);
@@ -159,6 +152,14 @@ public class CombatGrid extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setUpNavigationView();
         /***/
+        setTitle();
+    }
+
+    private void initializeGrid() {
+
+        // Set up the tabs
+        this.setContentView(R.layout.activity_combat_grid);
+
         if (mCombatView == null) {
             this.mCombatView = new GridView(this);
             this.mCombatView.setData(mData);
