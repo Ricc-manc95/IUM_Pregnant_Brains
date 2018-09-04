@@ -1,36 +1,33 @@
 package com.unica.pregnantbrains.ddgridmanager.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Region;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
-import com.unica.pregnantbrains.ddgridmanager.ScrollBuffer;
 import com.unica.pregnantbrains.ddgridmanager.model.ColorScheme;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 import com.unica.pregnantbrains.ddgridmanager.model.TokenCollection;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Line;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.DrawGestureListener;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.EraserGestureListener;
 import com.unica.pregnantbrains.ddgridmanager.view.interaction.GridViewGestureListener;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.SimpleGestureListener;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.TokenManipulationListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-public class GridView extends SurfaceView implements View.OnTouchListener {
+public class GridView extends View implements View.OnTouchListener {
     CoordinateTransformer transformer = new CoordinateTransformer();
     Paint paint = new Paint();
     boolean shouldDrawTokens = false;
@@ -69,7 +66,7 @@ public class GridView extends SurfaceView implements View.OnTouchListener {
     }
 
     public void setDrawMode() {
-        setGestureListener(new FingerDrawGestureListener(this));
+        setGestureListener(new DrawGestureListener(this));
     }
 
     public void setEraseMode() {
@@ -92,7 +89,7 @@ public class GridView extends SurfaceView implements View.OnTouchListener {
         shouldDrawTokens = true;
     }
 
-    private void setGestureListener(SimpleAllGestureListener listener) {
+    private void setGestureListener(SimpleGestureListener listener) {
         gestureDetector = new GestureDetector(this.getContext(), listener);
         gestureDetector.setOnDoubleTapListener(listener);
         scaleDetector = new ScaleGestureDetector(this.getContext(), listener);

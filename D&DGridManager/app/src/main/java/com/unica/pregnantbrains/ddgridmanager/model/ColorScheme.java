@@ -13,11 +13,11 @@ public class ColorScheme {
         this.lineColor = lineColor;
     }
 
-    int getBackgroundColor() {
+    public int getBackgroundColor() {
         return backgroundColor;
     }
 
-    int getLineColor() {
+    public int getLineColor() {
         return lineColor;
     }
 }

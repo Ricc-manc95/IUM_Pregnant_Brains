@@ -36,7 +36,7 @@ public class ScrollBuffer {
         primary = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         secondary = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         invalidated = true;
-        mMinDraw = (int) (Units.dpToPx(MIN_DRAW_DIP));
+        //mMinDraw = (int) (Units.dpToPx(MIN_DRAW_DIP));
     }
 
     public DrawRequest scroll(float deltaX, float deltaY) {

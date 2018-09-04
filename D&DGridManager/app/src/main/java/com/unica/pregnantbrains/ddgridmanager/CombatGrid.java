@@ -9,7 +9,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
@@ -26,6 +28,8 @@ public class CombatGrid extends AppCompatActivity {
     private SpeedDialView mSpeedDialView;
     private NavigationView mNavigationView;
 
+    private GridView mGridView;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +37,16 @@ public class CombatGrid extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if (this.getApplicationContext() == null) return;
+        mGridView = new GridView(this);
+
+        FrameLayout gridContentFrame = (FrameLayout) this.findViewById(R.id.grid_content_frame);
+        gridContentFrame.addView(mGridView);
+
+        mGridView.requestFocus();
+
+        if (this.getApplicationContext() == null) {
+            return;
+        }
 
         /***/
         /**FAB & Speed Dial*/
@@ -85,6 +98,7 @@ public class CombatGrid extends AppCompatActivity {
                         return true;
                     case R.id.fab_line:
                         Toast.makeText(CombatGrid.this, "Draw Line clicked", Toast.LENGTH_SHORT).show();
+                        mGridView.setDrawMode();
                         mSpeedDialView.close();
                         return true;
                     default:
@@ -167,11 +181,25 @@ public class CombatGrid extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        int id = item.getItemId();
+
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        if (id == R.id.eraser_tool) {
+            mGridView.setEraseMode();
+        } else if (id == R.id.ruler_tool) {
+
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.grid_manipulation_menu, menu);
+        return true;
     }
 
     /**Closing Speed Dial & Drawer on back pressed*/
