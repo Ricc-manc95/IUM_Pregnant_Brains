@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,7 @@ public class CombatGrid extends AppCompatActivity {
 
     private static final String TAG = CombatGrid.class.getSimpleName();
 
+    private ActionMode mActionMode;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
@@ -49,6 +51,21 @@ public class CombatGrid extends AppCompatActivity {
         }
 
         /***/
+        /**Toolbar*/
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setUpNavigationView();
+        /***/
+
         /**FAB & Speed Dial*/
         mSpeedDialView = findViewById(R.id.creation_speed_dial);
         //nSpeedDialView.inflate(R.menu.creation_menu);
@@ -97,9 +114,16 @@ public class CombatGrid extends AppCompatActivity {
                         mSpeedDialView.close();
                         return true;
                     case R.id.fab_line:
-                        Toast.makeText(CombatGrid.this, "Draw Line clicked", Toast.LENGTH_SHORT).show();
-                        mGridView.setDrawMode();
-                        mSpeedDialView.close();
+                        if (mActionMode != null) {
+                            mToolbar.collapseActionView();
+                            mSpeedDialView.close();
+                            return true;
+                        } else {
+                            mActionMode = startSupportActionMode(mActionModeCallback);
+                            Toast.makeText(CombatGrid.this, "Draw Line clicked", Toast.LENGTH_SHORT).show();
+                            mGridView.setDrawMode();
+                            mSpeedDialView.close();
+                        }
                         return true;
                     default:
                         break;
@@ -108,22 +132,33 @@ public class CombatGrid extends AppCompatActivity {
             }
         });
 
-        /**Toolbar*/
-        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
-        setSupportActionBar(mToolbar);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setUpNavigationView();
-        /***/
         setTitle();
     }
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            //EVENTUALE MENU INFLATER
+            //mode.setTitle("Draw line");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mGridView.setZoomPanMode();
+            mActionMode = null;
+        }
+    };
 
     private void setTitle() {
 
@@ -187,7 +222,15 @@ public class CombatGrid extends AppCompatActivity {
             return true;
         }
         if (id == R.id.eraser_tool) {
-            mGridView.setEraseMode();
+            if (mActionMode != null) {
+                mSpeedDialView.close();
+                return true;
+            } else {
+                mActionMode = startSupportActionMode(mActionModeCallback);
+                Toast.makeText(CombatGrid.this, "Erase Tool clicked", Toast.LENGTH_SHORT).show();
+                mGridView.setEraseMode();
+                mSpeedDialView.close();
+            }
         } else if (id == R.id.ruler_tool) {
 
         }

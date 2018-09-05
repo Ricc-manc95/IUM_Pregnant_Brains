@@ -29,7 +29,9 @@ import javax.annotation.Nonnull;
 
 public class GridView extends View implements View.OnTouchListener {
     CoordinateTransformer transformer = new CoordinateTransformer();
+
     Paint paint = new Paint();
+
     boolean shouldDrawTokens = false;
 
     private GestureDetector gestureDetector;
@@ -41,7 +43,7 @@ public class GridView extends View implements View.OnTouchListener {
     private ColorScheme colorScheme = ColorScheme.STANDARD;
 
     public TokenCollection tokens = new TokenCollection();
-    public int newLineColor = Color.BLACK;
+    public int newLineColor = Color.BLACK; /***QUI SI SCEGLIERANNO I COLORI DELLE LINEE*/
 
     public GridView(Context context) {
         super(context);
@@ -99,6 +101,12 @@ public class GridView extends View implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent ev) {
         this.gestureDetector.onTouchEvent(ev);
         this.scaleDetector.onTouchEvent(ev);
+
+        //If a finger was removed, optimize the lines by removing unused points.
+        //TODO(tim.bocek): Only do this if we are erasing.
+        if (ev.getAction() == MotionEvent.ACTION_POINTER_UP) {
+            this.optimizeActiveLines();
+        }
         return true;
     }
 
@@ -182,5 +190,15 @@ public class GridView extends View implements View.OnTouchListener {
         t.location = this.transformer.screenSpaceToWorldSpace(randomPoint);
         this.tokens.addToken(t);
         invalidate();
+    }
+
+    public void optimizeActiveLines() {
+        List<Line> newLines = new ArrayList<Line>();
+        for (int i = 0; i < mActiveLines.size(); ++i) {
+            List<Line> optimizedLines = mActiveLines.get(i).removeErasedPoints();
+            newLines.addAll(optimizedLines);
+        }
+        mActiveLines.clear();
+        mActiveLines.addAll(newLines);
     }
 }
