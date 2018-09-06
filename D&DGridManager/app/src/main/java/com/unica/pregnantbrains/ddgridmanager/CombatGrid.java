@@ -17,11 +17,13 @@ import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
+import com.unica.pregnantbrains.ddgridmanager.model.GridData;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public class CombatGrid extends AppCompatActivity {
 
     private static final String TAG = CombatGrid.class.getSimpleName();
+    private static final int NEW_PAWN_REQUEST = 1;
 
     private ActionMode mActionMode;
     private DrawerLayout mDrawerLayout;
@@ -31,6 +33,7 @@ public class CombatGrid extends AppCompatActivity {
     private NavigationView mNavigationView;
 
     private GridView mGridView;
+    private GridData mData = new GridData();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class CombatGrid extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        mGridView = new GridView(this);
+        mGridView = new GridView(this, mData);
 
         FrameLayout gridContentFrame = (FrameLayout) this.findViewById(R.id.grid_content_frame);
         gridContentFrame.addView(mGridView);
@@ -155,7 +158,8 @@ public class CombatGrid extends AppCompatActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            mGridView.setZoomPanMode();
+            mGridView.setTokenManipulationMode();
+            mGridView.setOnDragListener(mGridView.mOnDrag);
             mActionMode = null;
         }
     };
@@ -168,7 +172,7 @@ public class CombatGrid extends AppCompatActivity {
 
     private void newPawn() {
         Intent newPawnIntent = new Intent(this, PawnCreation.class);
-        startActivity(newPawnIntent);
+        startActivityForResult(newPawnIntent, NEW_PAWN_REQUEST);
     }
 
     private void setUpNavigationView() {
@@ -254,6 +258,19 @@ public class CombatGrid extends AppCompatActivity {
             this.mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request it is that we're responding to
+        if (requestCode == NEW_PAWN_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("result");
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
         }
     }
 }

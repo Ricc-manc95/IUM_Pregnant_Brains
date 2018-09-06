@@ -5,107 +5,105 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import com.unica.pregnantbrains.ddgridmanager.model.ColorScheme;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
+import com.unica.pregnantbrains.ddgridmanager.model.GridData;
+import com.unica.pregnantbrains.ddgridmanager.model.LineCollection;
 import com.unica.pregnantbrains.ddgridmanager.model.TokenCollection;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Line;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.DrawGestureListener;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.EraserGestureListener;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.GridViewGestureListener;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.SimpleGestureListener;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.TokenManipulationListener;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.DrawInteractionMode;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.EraserInteractionMode;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.GridRepositioningInteractionMode;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.GridViewInteractionMode;
+import com.unica.pregnantbrains.ddgridmanager.view.interaction.TokenManipulationInteractionMode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
-public class GridView extends View implements View.OnTouchListener {
-    CoordinateTransformer transformer = new CoordinateTransformer();
-
+public class GridView extends View {
     Paint paint = new Paint();
 
     boolean shouldDrawTokens = false;
 
     private GestureDetector gestureDetector;
     private ScaleGestureDetector scaleDetector;
+    private GridViewInteractionMode mGestureListener;
+    private LineCollection mActiveLines;
 
-    private List<Line> mBackgroundLines = new ArrayList<Line>();
-    private List<Line> mAnnotationLines = new ArrayList<Line>();
-    private List<Line> mActiveLines = mBackgroundLines;
-    private ColorScheme colorScheme = ColorScheme.STANDARD;
-
-    public TokenCollection tokens = new TokenCollection();
     public int newLineColor = Color.BLACK; /***QUI SI SCEGLIERANNO I COLORI DELLE LINEE*/
+    public GridData mData;
 
-    public GridView(Context context) {
+    public GridView(Context context, GridData data) {
         super(context);
+
+        mData = data;
+        mActiveLines = data.mBackgroundLines;
 
         setFocusable(true);
         setFocusableInTouchMode(true);
-        this.setOnTouchListener(this);
-
-        tokens.list().add(new Token(Color.BLUE));
 
         paint.setAntiAlias(true);
-        this.setZoomPanMode();
+        this.setTokenManipulationMode();
+        this.setOnDragListener(mOnDrag);
     }
 
     public void setZoomPanMode() {
-        setGestureListener(new GridViewGestureListener(this));
+        setGestureListener(new GridViewInteractionMode(this));
     }
 
     public void setTokenManipulationMode() {
-        setGestureListener(new TokenManipulationListener(this));
+        setGestureListener(new TokenManipulationInteractionMode(this));
         shouldDrawTokens = true;
     }
 
     public void setDrawMode() {
-        setGestureListener(new DrawGestureListener(this));
+        setGestureListener(new DrawInteractionMode(this));
     }
 
     public void setEraseMode() {
-        setGestureListener(new EraserGestureListener(this));
+        setGestureListener(new EraserInteractionMode(this));
+    }
+
+    public void setResizeGridMode() {
+        setGestureListener(new GridRepositioningInteractionMode(this));
     }
 
     public void useBackgroundLayer() {
-        mActiveLines = mBackgroundLines;
+        mActiveLines = mData.mBackgroundLines;
         shouldDrawTokens = false;
     }
 
     public void useAnnotationLayer() {
-        mActiveLines = mAnnotationLines;
+        mActiveLines = mData.mAnnotationLines;
         shouldDrawTokens = true;
     }
 
     public void setEraseAnnotationMode() {
-        setGestureListener(new EraserGestureListener(this));
+        setGestureListener(new EraserInteractionMode(this));
         useAnnotationLayer();
         shouldDrawTokens = true;
     }
 
-    private void setGestureListener(SimpleGestureListener listener) {
+    private void setGestureListener(GridViewInteractionMode listener) {
         gestureDetector = new GestureDetector(this.getContext(), listener);
         gestureDetector.setOnDoubleTapListener(listener);
         scaleDetector = new ScaleGestureDetector(this.getContext(), listener);
+        mGestureListener = listener;
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent ev) {
+    public boolean onTouchEvent(MotionEvent ev) {
         this.gestureDetector.onTouchEvent(ev);
         this.scaleDetector.onTouchEvent(ev);
 
         //If a finger was removed, optimize the lines by removing unused points.
         //TODO(tim.bocek): Only do this if we are erasing.
-        if (ev.getAction() == MotionEvent.ACTION_POINTER_UP) {
-            this.optimizeActiveLines();
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
+            this.mGestureListener.onUp(ev);
         }
         return true;
     }
@@ -113,92 +111,69 @@ public class GridView extends View implements View.OnTouchListener {
     @Override
     public void onDraw(Canvas canvas) {
         // White background
-        canvas.drawColor(colorScheme.getBackgroundColor());
-        drawGrid(canvas);
-
-        for (int i = 0; i < mBackgroundLines.size(); ++i){
-            mBackgroundLines.get(i).draw(canvas, transformer);
-        }
+        mData.grid.draw(canvas, mData.transformer);
+        mData.mBackgroundLines.drawAllLines(canvas, mData.transformer);
+        mData.tokens.drawAllTokens(canvas, getGridSpaceTransformer());
 
         if (this.shouldDrawTokens) {
-            for (int i = 0; i < tokens.list().size(); ++i){
-                tokens.list().get(i).draw(canvas, transformer);
-            }
-            for (int i = 0; i < mAnnotationLines.size(); ++i){
-                mAnnotationLines.get(i).draw(canvas, transformer);
-            }
-        }
-    }
-
-    private void drawGrid(Canvas canvas) {
-        paint.setColor(colorScheme.getLineColor());
-
-
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-
-        // At zoom level 1.0, we should have 15 squares across and the correct number of squares down.
-        float numSquaresHorizontal = (15 / transformer.zoomLevel);
-        float numSquaresVertical = (numSquaresHorizontal * ((float)height)/((float)width));
-
-        float squareSize = (float) width / numSquaresHorizontal;
-
-        int offsetX = (int)transformer.originX % (int)squareSize;
-        int offsetY = (int)transformer.originY % (int)squareSize;
-
-        int thickLineStartX = ((int)transformer.originX % (int)(squareSize * 5)) / (int)squareSize;
-        int thickLineStartY = ((int)transformer.originY % (int)(squareSize * 5)) / (int)squareSize;
-
-        for (int i = 0; i <= numSquaresHorizontal; ++i) {
-            if ((i-thickLineStartX)%5 == 0) {
-                paint.setStrokeWidth(2);
-            }
-            else {
-                paint.setStrokeWidth(1);
-            }
-            canvas.drawLine(i * squareSize + offsetX, 0, i * squareSize + offsetX, height, paint);
+            mData.mAnnotationLines.drawAllLines(canvas, mData.transformer);
         }
 
-        for (int i = 0; i <= numSquaresVertical; ++i) {
-            if ((i-thickLineStartY)%5 == 0) {
-                paint.setStrokeWidth(2);
-            }
-            else {
-                paint.setStrokeWidth(1);
-            }
-            canvas.drawLine(0, i * squareSize + offsetY, width, i * squareSize + offsetY, paint);
-        }
+        this.mGestureListener.draw(canvas);
     }
 
     public CoordinateTransformer getTransformer() {
-        return this.transformer;
+        return this.mData.transformer;
     }
 
     public Line createLine() {
-        Line l = new Line(this.newLineColor);
-        mActiveLines.add(l);
-        return l;
+       return mActiveLines.createLine(this.newLineColor);
     }
 
-    public List<Line> getLines() {
-        return mActiveLines;
-    }
-
-    public void placeTokenRandomly(Token t) {
-        Random r = new Random();
-        PointF randomPoint = new PointF(r.nextFloat() * this.getWidth(), r.nextFloat() * this.getHeight());
-        t.location = this.transformer.screenSpaceToWorldSpace(randomPoint);
-        this.tokens.addToken(t);
+    public void clearAll() {
+        this.mData.mBackgroundLines.clear();
+        this.mData.mAnnotationLines.clear();
+        this.mData.tokens.clear();
         invalidate();
     }
 
     public void optimizeActiveLines() {
-        List<Line> newLines = new ArrayList<Line>();
-        for (int i = 0; i < mActiveLines.size(); ++i) {
-            List<Line> optimizedLines = mActiveLines.get(i).removeErasedPoints();
-            newLines.addAll(optimizedLines);
+        mActiveLines.optimize();
+    }
+
+    private void placeToken(Token t) {
+        PointF attemptedLocationScreenSpace = new PointF(this.getWidth() / 2, this.getHeight() / 2);
+        PointF attemptedLocationGridSpace = this.mData.grid.gridSpaceToScreenSpaceTransformer(this.mData.transformer).screenSpaceToWorldSpace(attemptedLocationScreenSpace);
+        mData.tokens.placeTokenNearby(t, attemptedLocationGridSpace, mData.grid);
+        this.mData.tokens.addToken(t);
+        invalidate();
+    }
+
+    public View.OnDragListener mOnDrag = new View.OnDragListener() {
+        @Override
+        public boolean onDrag(View view, DragEvent event) {
+            Log.d("DRAG", Integer.toString(event.getAction()));
+            if (event.getAction() == DragEvent.ACTION_DROP) {
+                Token toAdd = (Token) event.getLocalState();
+                PointF location = getGridSpaceTransformer().screenSpaceToWorldSpace(new PointF(event.getX(), event.getY()));
+                location = mData.grid.getNearestSnapPoint(location, toAdd.size);
+                toAdd.location = location;
+                mData.tokens.addToken(toAdd);
+                invalidate();
+                return true;
+            }
+            else {
+                return event.getAction() == DragEvent.ACTION_DRAG_STARTED;
+            }
         }
-        mActiveLines.clear();
-        mActiveLines.addAll(newLines);
+    };
+    public LineCollection getActiveLines() {
+        return mActiveLines;
+    }
+    public TokenCollection getTokens() {
+        return mData.tokens;
+    }
+    public CoordinateTransformer getGridSpaceTransformer() {
+        return mData.grid.gridSpaceToScreenSpaceTransformer(mData.transformer);
     }
 }

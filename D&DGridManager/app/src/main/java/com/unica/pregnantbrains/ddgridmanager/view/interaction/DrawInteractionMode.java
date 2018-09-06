@@ -2,13 +2,14 @@ package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
 import android.graphics.PointF;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Line;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
-public class DrawGestureListener extends GridViewGestureListener {
+public class DrawInteractionMode extends GridViewInteractionMode {
 
-    public DrawGestureListener(GridView view) {
+    public DrawInteractionMode(GridView view) {
         super(view);
     }
 

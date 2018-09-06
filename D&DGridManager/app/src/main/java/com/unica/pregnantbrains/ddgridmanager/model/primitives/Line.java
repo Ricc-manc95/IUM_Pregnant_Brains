@@ -17,7 +17,7 @@ import java.util.List;
  *
  */
 public class Line {
-    private static float MIN_POINT_DISTANCE = 2;
+    private static float MIN_POINT_DISTANCE = 0;
 
     private int color = Color.BLACK;
     private int width = 2;

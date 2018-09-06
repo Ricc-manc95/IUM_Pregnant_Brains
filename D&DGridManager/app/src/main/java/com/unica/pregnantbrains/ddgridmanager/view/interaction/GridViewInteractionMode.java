@@ -1,5 +1,7 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
+import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -8,22 +10,29 @@ import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
-public class GridViewGestureListener extends SimpleGestureListener {
+public class GridViewInteractionMode extends SimpleGestureListener {
 
     protected GridView view;
 
-    public GridViewGestureListener(GridView view) {
+    public GridViewInteractionMode(GridView view) {
         this.view = view;
     }
-
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
-        view.getTransformer().zoomLevel *= detector.getScaleFactor();
-
-        // Don't let the object get too small or too large.
-        view.getTransformer().zoomLevel = Math.max(0.1f, Math.min(view.getTransformer().zoomLevel, 5.0f));
-
+        view.getTransformer().zoom(detector.getScaleFactor(), new PointF(detector.getFocusX(), detector.getFocusY()));
         view.invalidate();
         return true;
+    }
+
+    /**
+     * Allows the manipulation mode to draw custom user interface elements.
+     * @param c
+     */
+    public void draw(Canvas c) {
+
+    }
+
+    public void onUp(MotionEvent event) {
+
     }
 }

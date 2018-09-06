@@ -1,11 +1,15 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
 import android.content.Intent;
+import android.graphics.PointF;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 
 public class PawnCreation extends AppCompatActivity {
 
@@ -14,6 +18,7 @@ public class PawnCreation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_pawn_creation);
 
         /**Toolbar*/
@@ -42,7 +47,12 @@ public class PawnCreation extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-
+            case R.id.save_pawn:
+                Intent returnIntent = new Intent();
+                //returnIntent.putExtra("result", result);
+                setResult(CombatGrid.RESULT_OK, returnIntent);
+                setResult(CombatGrid.RESULT_CANCELED, returnIntent);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
