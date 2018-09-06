@@ -10,4 +10,15 @@
     <string name="header_title">Header Title</string>
     <string name="pawn_name_hint">Insert name</string>
     <string name="creation_save">SAVE</string>
+    <string-array name="size_pawn">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="direction_pawn">
+        <item>Nord</item>
+        <item>Sud</item>
+        <item>Est</item>
+        <item>Ovest</item>
+    </string-array>
 </resources>
