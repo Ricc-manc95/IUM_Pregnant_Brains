@@ -122,7 +122,7 @@ public class CombatGrid extends AppCompatActivity {
                             mSpeedDialView.close();
                             return true;
                         } else {
-                            mActionMode = startSupportActionMode(mActionModeCallback);
+                            mActionMode = startSupportActionMode(mActionModeDrawLineCallback);
                             Toast.makeText(CombatGrid.this, "Draw Line clicked", Toast.LENGTH_SHORT).show();
                             mGridView.setDrawMode();
                             mSpeedDialView.close();
@@ -138,11 +138,11 @@ public class CombatGrid extends AppCompatActivity {
         setTitle();
     }
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private ActionMode.Callback mActionModeEraserCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            //EVENTUALE MENU INFLATER
-            //mode.setTitle("Draw line");
+            getMenuInflater().inflate(R.menu.eraser_options_menu, menu);
+            mode.setTitle("Eraser");
             return true;
         }
 
@@ -153,7 +153,55 @@ public class CombatGrid extends AppCompatActivity {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            int id = item.getItemId();
+
+            switch (id) {
+                case R.id.eraser_dimension:
+                    /**ERASER DIMENSION*/
+                    Toast.makeText(CombatGrid.this, "Ersaer Dimension clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mGridView.setTokenManipulationMode();
+            mGridView.setOnDragListener(mGridView.mOnDrag);
+            mActionMode = null;
+        }
+    };
+
+    private ActionMode.Callback mActionModeDrawLineCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            getMenuInflater().inflate(R.menu.draw_line_options_menu, menu);
+            mode.setTitle("Draw line");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            int id = item.getItemId();
+
+            switch (id) {
+                case R.id.line_color:
+                    /**LINE COLOR*/
+                    Toast.makeText(CombatGrid.this, "Line Color clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.line_stroke:
+                    /**LINE STROKE*/
+                    Toast.makeText(CombatGrid.this, "Line Stroke clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         @Override
@@ -230,7 +278,7 @@ public class CombatGrid extends AppCompatActivity {
                 mSpeedDialView.close();
                 return true;
             } else {
-                mActionMode = startSupportActionMode(mActionModeCallback);
+                mActionMode = startSupportActionMode(mActionModeEraserCallback);
                 Toast.makeText(CombatGrid.this, "Erase Tool clicked", Toast.LENGTH_SHORT).show();
                 mGridView.setEraseMode();
                 mSpeedDialView.close();

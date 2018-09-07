@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/line_color"
+        android:icon="@drawable/ic_palette_white_24dp"
+        android:title="Line Color"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/line_stroke"
+        android:icon="@drawable/ic_stroke_length_white_24dp"
+        android:title="Line Stroke"
+        app:showAsAction="always"/>
+
+</menu>
