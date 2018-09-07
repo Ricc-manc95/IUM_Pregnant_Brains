@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
@@ -14,6 +15,7 @@ import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 public class PawnCreation extends AppCompatActivity {
 
     private Toolbar mToolbar;
+    private EditText text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +50,12 @@ public class PawnCreation extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.save_pawn:
+                text = (EditText) findViewById(R.id.pawn_name);
                 Intent returnIntent = new Intent();
                 //returnIntent.putExtra("result", result);
                 setResult(CombatGrid.RESULT_OK, returnIntent);
-                setResult(CombatGrid.RESULT_CANCELED, returnIntent);
+                returnIntent.putExtra("result", text.getText().toString());
+                //setResult(CombatGrid.RESULT_CANCELED, returnIntent);
                 finish();
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,6 +1,7 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.unica.pregnantbrains.ddgridmanager.model.GridData;
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public class CombatGrid extends AppCompatActivity {
@@ -320,6 +322,7 @@ public class CombatGrid extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
+                mGridView.placeToken(new Token(Color.RED, result));
             } else if (resultCode == RESULT_CANCELED) {
 
             }

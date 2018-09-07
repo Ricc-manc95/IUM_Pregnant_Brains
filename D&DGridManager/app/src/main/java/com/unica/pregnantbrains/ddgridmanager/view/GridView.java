@@ -141,7 +141,7 @@ public class GridView extends View {
         mActiveLines.optimize();
     }
 
-    private void placeToken(Token t) {
+    public void placeToken(Token t) {
         PointF attemptedLocationScreenSpace = new PointF(this.getWidth() / 2, this.getHeight() / 2);
         PointF attemptedLocationGridSpace = this.mData.grid.gridSpaceToScreenSpaceTransformer(this.mData.transformer).screenSpaceToWorldSpace(attemptedLocationScreenSpace);
         mData.tokens.placeTokenNearby(t, attemptedLocationGridSpace, mData.grid);
@@ -156,8 +156,8 @@ public class GridView extends View {
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 Token toAdd = (Token) event.getLocalState();
                 PointF location = getGridSpaceTransformer().screenSpaceToWorldSpace(new PointF(event.getX(), event.getY()));
-                location = mData.grid.getNearestSnapPoint(location, toAdd.size);
-                toAdd.location = location;
+                location = mData.grid.getNearestSnapPoint(location, toAdd.getSize());
+                toAdd.setLocation(location);
                 mData.tokens.addToken(toAdd);
                 invalidate();
                 return true;
