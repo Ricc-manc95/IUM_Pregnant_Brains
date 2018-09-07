@@ -73,7 +73,7 @@ public class CombatGrid extends AppCompatActivity {
         mSpeedDialView = findViewById(R.id.creation_speed_dial);
         //nSpeedDialView.inflate(R.menu.creation_menu);
 
-        //AGGIUNGERE CONTROLLO nSpeedDialViwe NOT NULL
+        //AGGIUNGERE CONTROLLO nSpeedDialView NOT NULL
         mSpeedDialView.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_obstacle, R.drawable.ic_obstacle_white_24dp)
                 .setLabel(getString(R.string.fab_obstacle))
                 .setTheme(R.style.AppTheme_Fab)
@@ -141,6 +141,7 @@ public class CombatGrid extends AppCompatActivity {
     private ActionMode.Callback mActionModeEraserCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mSpeedDialView.hide();
             getMenuInflater().inflate(R.menu.eraser_options_menu, menu);
             mode.setTitle("Eraser");
             return true;
@@ -167,6 +168,7 @@ public class CombatGrid extends AppCompatActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+            mSpeedDialView.show();
             mGridView.setTokenManipulationMode();
             mGridView.setOnDragListener(mGridView.mOnDrag);
             mActionMode = null;
@@ -176,6 +178,7 @@ public class CombatGrid extends AppCompatActivity {
     private ActionMode.Callback mActionModeDrawLineCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mSpeedDialView.hide();
             getMenuInflater().inflate(R.menu.draw_line_options_menu, menu);
             mode.setTitle("Draw line");
             return true;
@@ -206,6 +209,7 @@ public class CombatGrid extends AppCompatActivity {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+            mSpeedDialView.show();
             mGridView.setTokenManipulationMode();
             mGridView.setOnDragListener(mGridView.mOnDrag);
             mActionMode = null;
