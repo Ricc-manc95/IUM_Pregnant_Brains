@@ -52,7 +52,7 @@ public class PawnCreation extends AppCompatActivity {
 
                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(PawnCreation.this);
                 builderSingle.setIcon(R.drawable.ic_eraser_white_24dp);
-                builderSingle.setTitle("Select One Name:-");
+                builderSingle.setTitle("Colors");
 
                 ListView lv = (ListView) view.findViewById(R.id.colorlistview);
 
