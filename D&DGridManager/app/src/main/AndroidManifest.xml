@@ -22,6 +22,10 @@
         <activity android:name=".PawnCreation">
 
         </activity>
+        <activity android:name=".ObstacleCreation">
+
+        </activity>
     </application>
+
 
 </manifest>

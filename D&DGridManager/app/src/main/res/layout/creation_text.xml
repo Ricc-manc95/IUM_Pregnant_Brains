@@ -14,6 +14,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="@string/pawn_name_hint"
+        android:textColorHint="@color/material_white_1000"
         android:textColor="@color/cardview_light_background"
         android:textColorLink="@color/cardview_light_background" />
 </android.support.design.widget.TextInputLayout>

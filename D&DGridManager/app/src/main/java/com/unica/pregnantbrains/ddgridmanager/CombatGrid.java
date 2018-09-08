@@ -26,6 +26,7 @@ public class CombatGrid extends AppCompatActivity {
 
     private static final String TAG = CombatGrid.class.getSimpleName();
     private static final int NEW_PAWN_REQUEST = 1;
+    private static final int NEW_OBSTACLE_REQUEST=1;
 
     private ActionMode mActionMode;
     private DrawerLayout mDrawerLayout;
@@ -112,6 +113,7 @@ public class CombatGrid extends AppCompatActivity {
                 switch (actionItem.getId()) {
                     case R.id.fab_obstacle:
                         Toast.makeText(CombatGrid.this, "Create Obstacle clicked", Toast.LENGTH_SHORT).show();
+                        newObstacle();
                         mSpeedDialView.close();
                         return true;
                     case R.id.fab_area:
@@ -227,6 +229,10 @@ public class CombatGrid extends AppCompatActivity {
     private void newPawn() {
         Intent newPawnIntent = new Intent(this, PawnCreation.class);
         startActivityForResult(newPawnIntent, NEW_PAWN_REQUEST);
+    }
+    private void newObstacle() {
+        Intent newObstacleIntent = new Intent(this, ObstacleCreation.class);
+        startActivityForResult(newObstacleIntent, NEW_OBSTACLE_REQUEST);
     }
 
     private void setUpNavigationView() {
