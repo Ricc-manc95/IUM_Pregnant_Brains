@@ -47,6 +47,12 @@
         android:entries="@array/size_pawn"
         android:paddingBottom="5dp"></Spinner>
 
+    <Button
+        android:id="@+id/colorbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cambia colore" />
+
     <TextView
         android:id="@+id/movement_pawn"
         android:layout_width="match_parent"
