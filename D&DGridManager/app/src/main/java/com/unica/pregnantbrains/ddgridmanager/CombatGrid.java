@@ -1,5 +1,7 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,14 +15,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
+import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPickerListViewAdapter;
+import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPicker_Item;
 import com.unica.pregnantbrains.ddgridmanager.model.GridData;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
+
+import java.util.ArrayList;
 
 public class CombatGrid extends AppCompatActivity {
 
@@ -200,11 +208,24 @@ public class CombatGrid extends AppCompatActivity {
             switch (id) {
                 case R.id.line_color:
                     /**LINE COLOR*/
+
                     Toast.makeText(CombatGrid.this, "Line Color clicked", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.line_stroke:
                     /**LINE STROKE*/
-                    Toast.makeText(CombatGrid.this, "Line Stroke clicked", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CombatGrid.this);
+                    builder.setTitle("Select line stroke width").setItems(R.array.line_stroke, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            mGridView.setNewLineStroke(i);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.show();
                     return true;
                 default:
                     return false;
@@ -327,8 +348,9 @@ public class CombatGrid extends AppCompatActivity {
         if (requestCode == NEW_PAWN_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                mGridView.placeToken(new Token(Color.RED, result));
+                String name = data.getStringExtra("name");
+                int color = data.getIntExtra("color", 1);
+                mGridView.placeToken(new Token(color, name));
             } else if (resultCode == RESULT_CANCELED) {
 
             }

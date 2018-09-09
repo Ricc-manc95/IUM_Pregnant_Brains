@@ -26,8 +26,9 @@ public class Line {
     private List<PointF> points = new ArrayList<PointF>();
     private List<Boolean> shouldDraw = new ArrayList<Boolean>();
 
-    public Line (int color) {
+    public Line (int color, int strokeWidth) {
         this.color = color;
+        this.width = strokeWidth;
     }
 
     public void addPoint (PointF p) {
@@ -72,7 +73,7 @@ public class Line {
 
     public List<Line> removeErasedPoints() {
         List<Line> optimizedLines = new ArrayList<Line>();
-        Line l = new Line(color);
+        Line l = new Line(color, width);
 
         optimizedLines.add(l);
 
@@ -84,7 +85,7 @@ public class Line {
                 if (l.points.size() == 1) {
                     optimizedLines.remove(l);
                 }
-                l = new Line(color);
+                l = new Line(color, width);
                 optimizedLines.add(l);
             }
         }

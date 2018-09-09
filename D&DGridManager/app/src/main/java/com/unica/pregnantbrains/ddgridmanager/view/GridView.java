@@ -35,6 +35,7 @@ public class GridView extends View {
     private LineCollection mActiveLines;
 
     public int newLineColor = Color.BLACK; /***QUI SI SCEGLIERANNO I COLORI DELLE LINEE*/
+    public int newLineStrokeWidth = 2;
     public GridData mData;
 
     public GridView(Context context, GridData data) {
@@ -127,7 +128,7 @@ public class GridView extends View {
     }
 
     public Line createLine() {
-       return mActiveLines.createLine(this.newLineColor);
+       return mActiveLines.createLine(this.newLineColor, this.newLineStrokeWidth);
     }
 
     public void clearAll() {
@@ -175,5 +176,22 @@ public class GridView extends View {
     }
     public CoordinateTransformer getGridSpaceTransformer() {
         return mData.grid.gridSpaceToScreenSpaceTransformer(mData.transformer);
+    }
+
+    public void setNewLineStroke (int i) {
+        switch (i) {
+            case 0:
+                this.newLineStrokeWidth = 2;
+            case 1:
+                this.newLineStrokeWidth = 4;
+            case 2:
+                this.newLineStrokeWidth = 6;
+            case 3:
+                this.newLineStrokeWidth = 8;
+            case 4:
+                this.newLineStrokeWidth = 10;
+            case 5:
+                this.newLineStrokeWidth = 12;
+        }
     }
 }

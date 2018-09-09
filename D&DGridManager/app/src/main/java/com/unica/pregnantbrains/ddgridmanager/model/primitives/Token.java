@@ -1,6 +1,7 @@
 package com.unica.pregnantbrains.ddgridmanager.model.primitives;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
@@ -28,6 +29,11 @@ public class Token {
         p.setColor(color);
 
         c.drawCircle(center.x, center.y, radius, p);
+        p.setTextSize(radius);
+        p.setStrokeWidth(2);
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(Color.WHITE);
+        c.drawText(letters, center.x-radius/4, center.y+radius/4, p);
     }
 
     public void move(float distanceX, float distanceY) {

@@ -31,6 +31,10 @@ public class PawnCreation extends AppCompatActivity {
     private EditText text;
     private Button changecolor;
 
+    private String name;
+    private int color;
+    private String colorName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +99,10 @@ public class PawnCreation extends AppCompatActivity {
                 builderSingle.setAdapter(clad, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         ColorPicker_Item element = clad.getItem(which);
                         AlertDialog.Builder builderInner = new AlertDialog.Builder(PawnCreation.this);
                         builderInner.setMessage(element.getS());
+                        colorName = element.getS();
                         builderInner.setTitle("Your Selected Item is");
                         builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
@@ -137,11 +141,41 @@ public class PawnCreation extends AppCompatActivity {
                 Intent returnIntent = new Intent();
                 //returnIntent.putExtra("result", result);
                 setResult(CombatGrid.RESULT_OK, returnIntent);
-                returnIntent.putExtra("result", text.getText().toString());
+                returnIntent.putExtra("name", text.getText().toString());
+                returnIntent.putExtra("color", fromColorPicker(colorName));
                 //setResult(CombatGrid.RESULT_CANCELED, returnIntent);
                 finish();
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private int fromColorPicker(String colorName) {
+        switch (colorName) {
+            case "Pomodoro":
+                return Color.rgb(220, 33, 39);
+            case "Mandarino":
+                return Color.rgb(244, 81, 30);
+            case "Banana":
+                return Color.rgb(251, 215, 91);
+            case "Basilico":
+                return Color.rgb(81, 183, 73);
+            case "Salvia":
+                return Color.rgb(122, 231, 191);
+            case "Pavone":
+                return Color.rgb(84, 132, 237);
+            case "Mirtillo":
+                return Color.rgb(63, 81, 181);
+            case "Lavanda":
+                return Color.rgb(164, 189, 252);
+            case "Vinaccia":
+                return Color.rgb(142, 36, 170);
+            case "Fenicottero":
+                return Color.rgb(230, 124, 115);
+            case "Grafite":
+                return Color.rgb(97, 97, 97);
+            default:
+                return Color.rgb(164, 189, 252);
         }
     }
 }
