@@ -185,6 +185,11 @@ public class GridView extends View {
         this.newLineStrokeWidth = (i+1)*2;
     }
 
+    public void setNewLineColor(int c){
+
+        this.newLineColor=c;
+    }
+
     public void setData(GridData data) {
         mData = data;
         invalidate();
