@@ -1,7 +1,6 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
@@ -9,6 +8,7 @@ import com.unica.pregnantbrains.ddgridmanager.CombatGrid;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Util;
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.PointF;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public class TokenManipulationInteractionMode extends ZoomPanInteractionMode {
@@ -28,7 +28,7 @@ public class TokenManipulationInteractionMode extends ZoomPanInteractionMode {
             CoordinateTransformer transformer = view.getGridSpaceTransformer();
             PointF currentPointScreenSpace = new PointF(e2.getX(), e2.getY());
             // Get the nearest snap point in screen space
-            PointF nearestSnapPointWorldSpace = view.mData.grid.getNearestSnapPoint(transformer.screenSpaceToWorldSpace(currentPointScreenSpace), currentToken.getSize());
+            PointF nearestSnapPointWorldSpace = (PointF) view.getData().grid.getNearestSnapPoint(transformer.screenSpaceToWorldSpace(currentPointScreenSpace), currentToken.getSize());
             // Snap to that point if it is less than a threshold
             float distanceToSnapPoint = Util.distance(transformer.worldSpaceToScreenSpace(nearestSnapPointWorldSpace), currentPointScreenSpace);
             currentToken.setLocation(distanceToSnapPoint < GRID_SNAP_THRESHOLD ? nearestSnapPointWorldSpace : transformer.screenSpaceToWorldSpace(currentPointScreenSpace));
@@ -43,7 +43,7 @@ public class TokenManipulationInteractionMode extends ZoomPanInteractionMode {
         currentToken = view.getTokens().getTokenUnderPoint(new PointF(e.getX(), e.getY()), view.getGridSpaceTransformer());
 
         if (currentToken != null)
-            originalLocation = currentToken.getLocation();
+            originalLocation = (PointF) currentToken.getLocation();
 
         down = true;
         return true;

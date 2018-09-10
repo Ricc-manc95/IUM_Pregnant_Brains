@@ -3,6 +3,8 @@ package com.unica.pregnantbrains.ddgridmanager.model;
 import android.graphics.PointF;
 import android.support.design.widget.CoordinatorLayout;
 
+import java.io.Serializable;
+
 /**
  * Defines a transformation from one 2D coordinate system to another coordinate
  * system.
@@ -10,7 +12,9 @@ import android.support.design.widget.CoordinatorLayout;
  * @author Pregnant Brains
  *
  */
-public final class CoordinateTransformer {
+public final class CoordinateTransformer implements Serializable{
+    private static final long serialVersionUID = -2931805256349448184L;
+
     public float zoomLevel = 1.0f;
     public float originX = 0.0f;
     public float originY = 0.0f;
@@ -38,6 +42,16 @@ public final class CoordinateTransformer {
         // Derived by assuming that the focus point should map to the same point in world space before and after the zoom.
         originX = invariant.x - (invariant.x - lastOriginX) * zoomLevel / lastZoomLevel;
         originY = invariant.y - (invariant.y - lastOriginY) * zoomLevel / lastZoomLevel;
+
+    }
+
+    public void setOriginInWorldSpace(float x, float y) {
+        originX = x * zoomLevel;
+        originY = y * zoomLevel;
+    }
+
+    public void setZoom(float zoomLevel) {
+        this.zoomLevel = zoomLevel;
 
     }
 

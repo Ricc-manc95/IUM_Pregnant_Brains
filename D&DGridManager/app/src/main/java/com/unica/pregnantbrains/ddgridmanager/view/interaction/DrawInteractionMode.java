@@ -1,10 +1,9 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
-import android.graphics.PointF;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Line;
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.PointF;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public class DrawInteractionMode extends GridViewInteractionMode {

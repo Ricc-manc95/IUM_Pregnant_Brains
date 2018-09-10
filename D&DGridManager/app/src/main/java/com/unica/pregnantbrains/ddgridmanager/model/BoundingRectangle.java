@@ -2,7 +2,11 @@ package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.PointF;
 
-public class BoundingRectangle {
+import java.io.Serializable;
+
+public class BoundingRectangle implements Serializable {
+    private static final long serialVersionUID = -8393359080088684576L;
+
     private float boundsXMin = Float.MAX_VALUE;
     private float boundsXMax = Float.MIN_VALUE;
     private float boundsYMin = Float.MAX_VALUE;
@@ -27,5 +31,36 @@ public class BoundingRectangle {
                center.x - radius <= boundsXMax &&
                center.y + radius >= boundsYMin &&
                center.y - radius <= boundsYMax;
+    }
+
+    public void updateBounds(BoundingRectangle other) {
+        this.boundsXMin = Math.min(this.boundsXMin, other.boundsXMin);
+        this.boundsXMax = Math.max(this.boundsXMax, other.boundsXMax);
+        this.boundsYMin = Math.min(this.boundsYMin, other.boundsYMin);
+        this.boundsYMax = Math.max(this.boundsYMax, other.boundsYMax);
+    }
+
+    public float getXMin() {
+        return boundsXMin;
+    }
+
+    public float getXMax() {
+        return boundsXMax;
+    }
+
+    public float getYMin() {
+        return boundsYMin;
+    }
+
+    public float getYMax() {
+        return boundsYMax;
+    }
+
+    public float getWidth() {
+        return boundsXMax - boundsXMin;
+    }
+
+    public float getHeight() {
+        return boundsYMax - boundsYMin;
     }
 }

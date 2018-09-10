@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import com.unica.pregnantbrains.ddgridmanager.model.BoundingRectangle;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,9 @@ import java.util.List;
  * @author Pregnant Brains
  *
  */
-public class Line {
+public class Line implements Serializable {
+    private static final long serialVersionUID = 3257827329397829446L;
+
     private static float MIN_POINT_DISTANCE = 0;
 
     private int color = Color.BLACK;
@@ -91,5 +94,9 @@ public class Line {
         }
 
         return optimizedLines;
+    }
+
+    public BoundingRectangle getBoundingRectangle() {
+        return boundingRectangle;
     }
 }

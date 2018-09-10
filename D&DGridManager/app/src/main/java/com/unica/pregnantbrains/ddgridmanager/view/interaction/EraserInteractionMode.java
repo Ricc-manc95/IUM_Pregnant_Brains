@@ -3,9 +3,9 @@ package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.PointF;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public class EraserInteractionMode extends GridViewInteractionMode {

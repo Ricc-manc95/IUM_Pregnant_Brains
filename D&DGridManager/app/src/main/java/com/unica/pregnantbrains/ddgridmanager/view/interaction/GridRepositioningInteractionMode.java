@@ -1,10 +1,10 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
-import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.PointF;
 
 public class GridRepositioningInteractionMode extends GridViewInteractionMode {
     public GridRepositioningInteractionMode(GridView view) {
@@ -13,7 +13,7 @@ public class GridRepositioningInteractionMode extends GridViewInteractionMode {
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        view.mData.grid.gridSpaceToWorldSpaceTransformer().moveOrigin(
+        view.getData().grid.gridSpaceToWorldSpaceTransformer().moveOrigin(
                 -view.getTransformer().screenSpaceToWorldSpace(distanceX),
                 -view.getTransformer().screenSpaceToWorldSpace(distanceY));
         view.invalidate();
@@ -22,8 +22,8 @@ public class GridRepositioningInteractionMode extends GridViewInteractionMode {
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
-        PointF invariantPointWorldSpace = view.getTransformer().screenSpaceToWorldSpace(detector.getFocusX(), detector.getFocusY());
-        view.mData.grid.gridSpaceToWorldSpaceTransformer().zoom(detector.getScaleFactor(), invariantPointWorldSpace);
+        PointF invariantPointWorldSpace = (PointF) view.getTransformer().screenSpaceToWorldSpace(detector.getFocusX(), detector.getFocusY());
+        view.getData().grid.gridSpaceToWorldSpaceTransformer().zoom(detector.getScaleFactor(), invariantPointWorldSpace);
         view.invalidate();
         return true;
     }

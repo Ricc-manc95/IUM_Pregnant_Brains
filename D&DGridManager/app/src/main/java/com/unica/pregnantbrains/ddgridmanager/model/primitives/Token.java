@@ -5,9 +5,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.unica.pregnantbrains.ddgridmanager.model.BoundingRectangle;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 
-public class Token {
+import java.io.Serializable;
+
+public class Token implements Serializable {
+    private static final long serialVersionUID = -7487011985982373093L;
 
     private PointF location = new PointF(0, 0);
     private float size = 1.0f; // Relative diameter of the token (1.0 = occupies one grid square
@@ -67,6 +71,13 @@ public class Token {
         Paint p = new Paint();
         p.setColor(color);
         c.drawCircle(x, y, radius, p);
+    }
+
+    public BoundingRectangle getBoundingRectangle() {
+        BoundingRectangle r = new BoundingRectangle();
+        r.updateBounds(new PointF(location.x - size/2, location.y - size/2));
+        r.updateBounds(new PointF(location.x + size/2, location.y + size/2));
+        return r;
     }
 
     public void setSize(float d) {

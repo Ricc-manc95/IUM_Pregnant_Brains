@@ -1,12 +1,12 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
+import com.unica.pregnantbrains.ddgridmanager.model.primitives.PointF;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 

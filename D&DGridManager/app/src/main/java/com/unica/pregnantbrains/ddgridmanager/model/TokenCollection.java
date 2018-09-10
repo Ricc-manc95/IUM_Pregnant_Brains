@@ -6,10 +6,13 @@ import android.graphics.PointF;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenCollection {
+public class TokenCollection implements Serializable {
+    private static final long serialVersionUID = -4147571470329375342L;
+
     private List<Token> tokens = new ArrayList<Token>();
 
     public List<Token> list() {
@@ -90,5 +93,9 @@ public class TokenCollection {
             tokens.get(i).drawInPosition(canvas, transformer);
         }
 
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
     }
 }
