@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import com.unica.pregnantbrains.ddgridmanager.model.BoundingRectangle;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 
 public class Token {
@@ -87,5 +88,12 @@ public class Token {
 
     public void setLocation(PointF location) {
         this.location = location;
+    }
+
+    public BoundingRectangle getBoundingRectangle() {
+        BoundingRectangle r = new BoundingRectangle();
+        r.updateBounds(new PointF(location.x - size/2, location.y - size/2));
+        r.updateBounds(new PointF(location.x + size/2, location.y + size/2));
+        return r;
     }
 }

@@ -8,11 +8,39 @@ public class BoundingRectangle {
     private float boundsYMin = Float.MAX_VALUE;
     private float boundsYMax = Float.MIN_VALUE;
 
+    public float getXMin() {
+        return boundsXMin;
+    }
+    public float getXMax() {
+        return boundsXMax;
+    }
+    public float getYMin() {
+        return boundsYMin;
+    }
+    public float getYMax() {
+        return boundsYMax;
+    }
+
+    public float getWidth() {
+        return boundsXMax - boundsXMin;
+    }
+
+    public float getHeight() {
+        return boundsYMax - boundsYMin;
+    }
+
     public void updateBounds(PointF p) {
         this.boundsXMin = Math.min(this.boundsXMin, p.x);
         this.boundsXMax = Math.max(this.boundsXMax, p.x);
         this.boundsYMin = Math.min(this.boundsYMin, p.y);
         this.boundsYMax = Math.max(this.boundsYMax, p.y);
+    }
+
+    public void updateBounds(BoundingRectangle other) {
+        this.boundsXMin = Math.min(this.boundsXMin, other.boundsXMin);
+        this.boundsXMax = Math.max(this.boundsXMax, other.boundsXMax);
+        this.boundsYMin = Math.min(this.boundsYMin, other.boundsYMin);
+        this.boundsYMax = Math.max(this.boundsYMax, other.boundsYMax);
     }
 
     public boolean contains(PointF p) {

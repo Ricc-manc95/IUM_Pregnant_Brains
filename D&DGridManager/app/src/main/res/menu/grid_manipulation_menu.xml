@@ -2,9 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/boh"
-        android:icon="@drawable/ic_eraser_white_24dp"
-        android:title="Se mai volessimo metterci altra roba, i puntini visivamente ci stanno meglio"
+        android:id="@+id/zoom_to_fit"
+        android:title="Zoom to fit"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/clear_all"
+        android:title="Clear all"
         app:showAsAction="never"/>
 
     <item

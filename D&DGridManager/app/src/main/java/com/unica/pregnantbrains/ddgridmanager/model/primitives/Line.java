@@ -92,4 +92,8 @@ public class Line {
 
         return optimizedLines;
     }
+
+    public BoundingRectangle getBoundingRectangle() {
+        return boundingRectangle;
+    }
 }

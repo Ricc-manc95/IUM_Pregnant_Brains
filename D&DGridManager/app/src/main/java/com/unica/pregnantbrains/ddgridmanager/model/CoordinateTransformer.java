@@ -107,4 +107,14 @@ public final class CoordinateTransformer {
         originX += dx;
         originY += dy;
     }
+
+    public void setOriginInWorldSpace(float x, float y) {
+        originX = x * zoomLevel;
+        originY = y * zoomLevel;
+    }
+
+    public void setZoom(float zoomLevel) {
+        this.zoomLevel = zoomLevel;
+
+    }
 }

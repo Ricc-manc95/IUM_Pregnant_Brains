@@ -3,8 +3,10 @@ package com.unica.pregnantbrains.ddgridmanager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,17 +15,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPickerListViewAdapter;
 import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPicker_Item;
+import com.unica.pregnantbrains.ddgridmanager.data.DataManager;
+import com.unica.pregnantbrains.ddgridmanager.model.Grid;
 import com.unica.pregnantbrains.ddgridmanager.model.GridData;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
@@ -44,7 +50,7 @@ public class CombatGrid extends AppCompatActivity {
     private NavigationView mNavigationView;
 
     private GridView mGridView;
-    private GridData mData = new GridData();
+    private static GridData mData; //= new GridData();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -53,11 +59,12 @@ public class CombatGrid extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        mGridView = new GridView(this, mData);
+        mGridView = new GridView(this/*, mData*/);
 
         FrameLayout gridContentFrame = (FrameLayout) this.findViewById(R.id.grid_content_frame);
         gridContentFrame.addView(mGridView);
 
+        mGridView.setTokenManipulationMode();
         mGridView.requestFocus();
 
         if (this.getApplicationContext() == null) {
@@ -150,6 +157,61 @@ public class CombatGrid extends AppCompatActivity {
         setTitle();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        // Attempt to load map data.  If we can't load map data, create a new map.
+        String filename = sharedPreferences.getString("filename", null);
+        if (filename == null) {
+            GridData.clear();
+            mData = GridData.getInstance();
+            mGridView.setData(mData);
+        } else {
+            loadMap(filename);
+        }
+        mData.grid = Grid.createGrid(mData.grid.gridSpaceToWorldSpaceTransformer());
+
+        mGridView.invalidate();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        String filename = sharedPreferences.getString("filename", null);
+        if (filename == null) {
+            setFilenamePreference("tmp");
+            filename = "tmp";
+        }
+        saveMap(filename);
+    }
+
+    private void saveMap(String name) {
+        // TODO Auto-generated method stub
+        try {
+            new DataManager(getApplicationContext()).saveMapName(name);
+        } catch (Exception e) {
+            reportIOException(e, "save");
+            GridData.clear();
+            setFilenamePreference(null);
+        }
+    }
+
+    private void reportIOException(Exception e, String attemptedAction) {
+        Log.e(TAG, "Could not " + attemptedAction + " file.  Reason:");
+        Log.e(TAG, e.toString());
+        //TODO(tim.bocek): Report this in a more user-friendly way.
+    }
+    private void setFilenamePreference(String newFilename) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        // Persist the filename that we saved to so that we can load from that file again.
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("filename", newFilename);
+        editor.commit();
+    }
+
     private ActionMode.Callback mActionModeEraserCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -218,6 +280,8 @@ public class CombatGrid extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             mGridView.setNewLineStroke(i);
+                            Toast.makeText(CombatGrid.this, ""+mGridView.newLineStrokeWidth, Toast.LENGTH_SHORT).show();
+                            //mGridView.setDrawMode();
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -267,11 +331,29 @@ public class CombatGrid extends AppCompatActivity {
                 //Check wich item was being clicked
                 switch (menuItem.getItemId()){
                     case R.id.nav_save:
-                        Toast.makeText(CombatGrid.this, "Save Grid clicked", Toast.LENGTH_SHORT).show();
                         mDrawerLayout.closeDrawers();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CombatGrid.this);
+                        LayoutInflater inflater = CombatGrid.this.getLayoutInflater();
+                        builder.setTitle("Grid name").setView(inflater.inflate(R.layout.save_dialog, null))
+                                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                TextView nameText = findViewById(R.id.grid_name);
+                                String name = nameText.getText().toString();
+                                saveMap(name);
+                                setFilenamePreference(name);
+                            }
+                        })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builder.show();
                         break;
                     case R.id.nav_load:
-                        Toast.makeText(CombatGrid.this, "Load Grid clicked", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(CombatGrid.this, GridsList.class));
                         mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_settings:
@@ -306,20 +388,31 @@ public class CombatGrid extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (id == R.id.eraser_tool) {
-            if (mActionMode != null) {
-                mSpeedDialView.close();
+        switch (id) {
+            case R.id.eraser_tool:
+                if (mActionMode != null) {
+                    mSpeedDialView.close();
+                    return true;
+                } else {
+                    mActionMode = startSupportActionMode(mActionModeEraserCallback);
+                    Toast.makeText(CombatGrid.this, "Erase Tool clicked", Toast.LENGTH_SHORT).show();
+                    mGridView.setEraseMode();
+                    mSpeedDialView.close();
+                }
                 return true;
-            } else {
-                mActionMode = startSupportActionMode(mActionModeEraserCallback);
-                Toast.makeText(CombatGrid.this, "Erase Tool clicked", Toast.LENGTH_SHORT).show();
-                mGridView.setEraseMode();
-                mSpeedDialView.close();
-            }
-        } else if (id == R.id.ruler_tool) {
-
+            case R.id.ruler_tool:
+                Toast.makeText(CombatGrid.this, "Ruler Tool clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.zoom_to_fit:
+                mData.zoomToFit(mGridView.getWidth(), mGridView.getHeight());
+                return true;
+            case R.id.clear_all:
+                mData.clear();
+                setFilenamePreference(null);
+                mData = GridData.getInstance();
+                mGridView.setData(mData);
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -355,5 +448,17 @@ public class CombatGrid extends AppCompatActivity {
 
             }
         }
+    }
+
+    public void loadMap(String name) {
+        try {
+            new DataManager(getApplicationContext()).loadMapName(name);
+        } catch (Exception e) {
+            reportIOException(e, "load");
+            GridData.clear();
+            setFilenamePreference(null);
+        }
+        mData = GridData.getInstance();
+        mGridView.setData(mData);
     }
 }

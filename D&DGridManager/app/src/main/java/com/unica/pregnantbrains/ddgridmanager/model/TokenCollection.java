@@ -91,4 +91,8 @@ public class TokenCollection {
         }
 
     }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
 }

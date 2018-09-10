@@ -81,4 +81,16 @@ public class Grid {
 
         return new PointF(previousGridLineX + offset, previousGridLineY + offset);
     }
+
+    public static Grid createGrid(ColorScheme colorScheme) {
+        Grid g = new Grid();
+        g.colorScheme = colorScheme;
+        return g;
+    }
+
+    public static Grid createGrid(CoordinateTransformer transformer) {
+        Grid g = createGrid(ColorScheme.STANDARD);
+        g.mGridToWorldTransformer = transformer;
+        return g;
+    }
 }
