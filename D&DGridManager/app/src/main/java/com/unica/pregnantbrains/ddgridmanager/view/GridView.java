@@ -36,10 +36,13 @@ public class GridView extends View {
 
     public int newLineColor = Color.BLACK; /***QUI SI SCEGLIERANNO I COLORI DELLE LINEE*/
     public int newLineStrokeWidth = 2;
-    private GridData mData;
+    public GridData mData;
 
-    public GridView(Context context) {
+    public GridView(Context context, GridData data) {
         super(context);
+
+        mData = data;
+        mActiveLines = data.mBackgroundLines;
 
         setFocusable(true);
         setFocusableInTouchMode(true);
@@ -71,12 +74,12 @@ public class GridView extends View {
     }
 
     public void useBackgroundLayer() {
-        mActiveLines = getData().mBackgroundLines;
+        mActiveLines = mData.mBackgroundLines;
         shouldDrawTokens = false;
     }
 
     public void useAnnotationLayer() {
-        mActiveLines = getData().mAnnotationLines;
+        mActiveLines = mData.mAnnotationLines;
         shouldDrawTokens = true;
     }
 
@@ -109,23 +112,30 @@ public class GridView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         // White background
-        getData().grid.draw(canvas, getData().transformer);
-        getData().mBackgroundLines.drawAllLines(canvas, getData().transformer);
-        getData().tokens.drawAllTokens(canvas, getGridSpaceTransformer());
+        mData.grid.draw(canvas, mData.transformer);
+        mData.mBackgroundLines.drawAllLines(canvas, mData.transformer);
+        mData.tokens.drawAllTokens(canvas, getGridSpaceTransformer());
 
         if (this.shouldDrawTokens) {
-            getData().mAnnotationLines.drawAllLines(canvas, getData().transformer);
+            mData.mAnnotationLines.drawAllLines(canvas, mData.transformer);
         }
 
         this.mGestureListener.draw(canvas);
     }
 
     public CoordinateTransformer getTransformer() {
-        return this.getData().transformer;
+        return this.mData.transformer;
     }
 
     public Line createLine() {
        return mActiveLines.createLine(this.newLineColor, this.newLineStrokeWidth);
+    }
+
+    public void clearAll() {
+        this.mData.mBackgroundLines.clear();
+        this.mData.mAnnotationLines.clear();
+        this.mData.tokens.clear();
+        invalidate();
     }
 
     public void optimizeActiveLines() {
@@ -134,9 +144,9 @@ public class GridView extends View {
 
     public void placeToken(Token t) {
         PointF attemptedLocationScreenSpace = new PointF(this.getWidth() / 2, this.getHeight() / 2);
-        PointF attemptedLocationGridSpace = this.getData().grid.gridSpaceToScreenSpaceTransformer(this.getData().transformer).screenSpaceToWorldSpace(attemptedLocationScreenSpace);
-        getData().tokens.placeTokenNearby(t, attemptedLocationGridSpace, getData().grid);
-        this.getData().tokens.addToken(t);
+        PointF attemptedLocationGridSpace = this.mData.grid.gridSpaceToScreenSpaceTransformer(this.mData.transformer).screenSpaceToWorldSpace(attemptedLocationScreenSpace);
+        mData.tokens.placeTokenNearby(t, attemptedLocationGridSpace, mData.grid);
+        this.mData.tokens.addToken(t);
         invalidate();
     }
 
@@ -147,9 +157,9 @@ public class GridView extends View {
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 Token toAdd = (Token) event.getLocalState();
                 PointF location = getGridSpaceTransformer().screenSpaceToWorldSpace(new PointF(event.getX(), event.getY()));
-                location = getData().grid.getNearestSnapPoint(location, toAdd.getSize());
+                location = mData.grid.getNearestSnapPoint(location, toAdd.getSize());
                 toAdd.setLocation(location);
-                getData().tokens.addToken(toAdd);
+                mData.tokens.addToken(toAdd);
                 invalidate();
                 return true;
             }
@@ -162,17 +172,10 @@ public class GridView extends View {
         return mActiveLines;
     }
     public TokenCollection getTokens() {
-        return getData().tokens;
+        return mData.tokens;
     }
     public CoordinateTransformer getGridSpaceTransformer() {
-        return mData.grid.gridSpaceToScreenSpaceTransformer(getData().transformer);
-    }
-    public void setData(GridData data) {
-        mData = data;
-        invalidate();
-    }
-    public GridData getData() {
-        return mData;
+        return mData.grid.gridSpaceToScreenSpaceTransformer(mData.transformer);
     }
 
     public void setNewLineStroke (int i) {
@@ -190,12 +193,5 @@ public class GridView extends View {
             case 5:
                 this.newLineStrokeWidth = 12;
         }
-    }
-
-    public void clearAll() {
-        this.getData().mBackgroundLines.clear();
-        this.getData().mAnnotationLines.clear();
-        this.getData().tokens.clear();
-        invalidate();
     }
 }

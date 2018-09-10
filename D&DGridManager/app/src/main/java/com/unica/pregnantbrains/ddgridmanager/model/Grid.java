@@ -4,11 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
-import java.io.Serializable;
-
-public class Grid implements Serializable {
-    private static final long serialVersionUID = 2475782102104935864L;
-
+public class Grid {
     public ColorScheme colorScheme = ColorScheme.STANDARD;
     private CoordinateTransformer mGridToWorldTransformer = new CoordinateTransformer(0,0,1);
 
@@ -68,18 +64,6 @@ public class Grid implements Serializable {
             }
             canvas.drawLine(0, i * squareSize + offsetY, width, i * squareSize + offsetY, paint);
         }
-    }
-
-    public static Grid createGrid(String colorScheme) {
-        Grid g = new Grid();
-        g.colorScheme = ColorScheme.fromNamedScheme(colorScheme);
-        return g;
-    }
-
-    public static Grid createGrid(String colorScheme, CoordinateTransformer transformer) {
-        Grid g = createGrid(colorScheme);
-        g.mGridToWorldTransformer = transformer;
-        return g;
     }
 
     //Returns nearest snap point in grid space

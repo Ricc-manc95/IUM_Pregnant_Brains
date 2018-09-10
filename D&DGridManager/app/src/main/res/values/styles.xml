@@ -24,7 +24,4 @@
 
     <style name="CreationToolbarTheme" parent="AppTheme" />
 
-    <style name="GridManipulationMenuTheme" parent="AppTheme">
-        <item name="android:background">@color/material_white_1000</item>
-    </style>
 </resources>

@@ -2,11 +2,7 @@ package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.Color;
 
-import java.io.Serializable;
-
-public class ColorScheme implements Serializable {
-    private static final long serialVersionUID = 7366712691951842828L;
-
+public class ColorScheme {
     public static final ColorScheme STANDARD = new ColorScheme(Color.rgb(250,250,250), Color.rgb(117, 117, 117));
 
     private int backgroundColor;
@@ -23,14 +19,5 @@ public class ColorScheme implements Serializable {
 
     public int getLineColor() {
         return lineColor;
-    }
-
-    public static ColorScheme fromNamedScheme(String name) {
-        switch (name) {
-            case "standard":
-                return STANDARD;
-            default:
-                return STANDARD;
-        }
     }
 }

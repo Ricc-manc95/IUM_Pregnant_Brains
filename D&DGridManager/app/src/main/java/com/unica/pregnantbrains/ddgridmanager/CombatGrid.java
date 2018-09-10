@@ -1,14 +1,10 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,23 +24,17 @@ import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPickerListViewAdapter;
 import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPicker_Item;
-import com.unica.pregnantbrains.ddgridmanager.data.DataManager;
-import com.unica.pregnantbrains.ddgridmanager.data.Load;
-import com.unica.pregnantbrains.ddgridmanager.model.Grid;
 import com.unica.pregnantbrains.ddgridmanager.model.GridData;
 import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.FilenameSelectedListener;
-import com.unica.pregnantbrains.ddgridmanager.view.interaction.SaveDialog;
 
 import java.util.ArrayList;
 
 public class CombatGrid extends AppCompatActivity {
 
     private static final String TAG = CombatGrid.class.getSimpleName();
-    private static final int DIALOG_ID_SAVE = 0;
     private static final int NEW_PAWN_REQUEST = 1;
-    private static final int NEW_OBSTACLE_REQUEST = 2;
+    private static final int NEW_OBSTACLE_REQUEST=1;
 
     private ActionMode mActionMode;
     private DrawerLayout mDrawerLayout;
@@ -54,20 +44,7 @@ public class CombatGrid extends AppCompatActivity {
     private NavigationView mNavigationView;
 
     private GridView mGridView;
-    private GridData mData;
-
-    private FilenameSelectedListener onFilenameSelected = new FilenameSelectedListener() {
-        @Override
-        public void onSaveFilenameSelected(String name) {
-            saveMap(name);
-            setFilenamePreference(name);
-        }
-        @Override
-        public void onLoadFilenameSelected(String name) {
-            loadMap(name);
-            setFilenamePreference(name);
-        }
-    };
+    private GridData mData = new GridData();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -76,12 +53,11 @@ public class CombatGrid extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        mGridView = new GridView(this);
+        mGridView = new GridView(this, mData);
 
         FrameLayout gridContentFrame = (FrameLayout) this.findViewById(R.id.grid_content_frame);
         gridContentFrame.addView(mGridView);
 
-        mGridView.setTokenManipulationMode();
         mGridView.requestFocus();
 
         if (this.getApplicationContext() == null) {
@@ -174,62 +150,6 @@ public class CombatGrid extends AppCompatActivity {
         setTitle();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        //Attempt to load a map; if can't load, create a new map
-        String filename = sharedPreferences.getString("filename", null);
-        if (filename == null) {
-            GridData.clear();
-            mData = GridData.getInstance();
-            mGridView.setData(mData);
-        } else {
-            loadMap(filename);
-        }
-        String colorScheme = sharedPreferences.getString("theme", "standard");
-        mData.grid = Grid.createGrid(colorScheme, mData.grid.gridSpaceToWorldSpaceTransformer());
-
-        mGridView.invalidate();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-
-        String filename = sharedPreferences.getString("filename", null);
-        if (filename == null) {
-            setFilenamePreference("tmp");
-            filename = "tmo";
-        }
-        saveMap(filename);
-    }
-
-    private void saveMap(String name) {
-        // TODO Auto-generated method stub
-        try {
-            new DataManager(getApplicationContext()).saveMapName(name);
-        } catch (Exception e) {
-            reportIOException(e, "save");
-            GridData.clear();
-            setFilenamePreference(null);
-        }
-    }
-
-    private void reportIOException (Exception e, String attemptedAction) {
-        Log.e(TAG, "Could not " + attemptedAction + " file. Reason:");
-        Log.e(TAG, e.toString());
-    }
-
-    private void setFilenamePreference(String newFilename) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        // Persist the filename that we saved to so that we can load from that file again.
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("filename", newFilename);
-        editor.commit();
-    }
-
     private ActionMode.Callback mActionModeEraserCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -297,7 +217,6 @@ public class CombatGrid extends AppCompatActivity {
                     builder.setTitle("Select line stroke width").setItems(R.array.line_stroke, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            mGridView.setDrawMode();
                             mGridView.setNewLineStroke(i);
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -349,13 +268,10 @@ public class CombatGrid extends AppCompatActivity {
                 switch (menuItem.getItemId()){
                     case R.id.nav_save:
                         Toast.makeText(CombatGrid.this, "Save Grid clicked", Toast.LENGTH_SHORT).show();
-                        showDialog(DIALOG_ID_SAVE);
-                        break;
                         mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_load:
                         Toast.makeText(CombatGrid.this, "Load Grid clicked", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, Load.class));
                         mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_settings:
@@ -390,29 +306,20 @@ public class CombatGrid extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (id) {
-            case R.id.eraser_tool:
-                if (mActionMode != null) {
-                    mSpeedDialView.close();
-                    return true;
-                } else {
-                    mActionMode = startSupportActionMode(mActionModeEraserCallback);
-                    mGridView.setEraseMode();
-                    mSpeedDialView.close();
-                }
-            case R.id.ruler_tool:
-                Toast.makeText(CombatGrid.this, "Ruler Tool clicked", Toast.LENGTH_SHORT).show();
+        if (id == R.id.eraser_tool) {
+            if (mActionMode != null) {
+                mSpeedDialView.close();
                 return true;
-            case R.id.zoom_to_fit:
-                mData.zoomToFit(mGridView.getWidth(), mGridView.getHeight());
-                return true;
-            case R.id.clear_all:
-                GridData.clear();
-                setFilenamePreference(null);
-                mData = GridData.getInstance();
-                mGridView.setData(mData);
-                return true;
+            } else {
+                mActionMode = startSupportActionMode(mActionModeEraserCallback);
+                Toast.makeText(CombatGrid.this, "Erase Tool clicked", Toast.LENGTH_SHORT).show();
+                mGridView.setEraseMode();
+                mSpeedDialView.close();
+            }
+        } else if (id == R.id.ruler_tool) {
+
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -435,14 +342,6 @@ public class CombatGrid extends AppCompatActivity {
         }
     }
 
-    public Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DIALOG_ID_SAVE:
-                return new SaveDialog(this, onFilenameSelected);
-        }
-        return null;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request it is that we're responding to
@@ -456,17 +355,5 @@ public class CombatGrid extends AppCompatActivity {
 
             }
         }
-    }
-
-    public void loadMap(String name) {
-        try {
-            new DataManager(getApplicationContext()).loadMapName(name);
-        } catch (Exception e) {
-            reportIOException(e, "load");
-            GridData.clear();
-            setFilenamePreference(null);
-        }
-        mData = GridData.getInstance();
-        mGridView.setData(mData);
     }
 }
