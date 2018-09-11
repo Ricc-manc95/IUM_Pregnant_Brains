@@ -2,9 +2,12 @@ package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
-public class Grid {
+import java.io.Serializable;
+
+public class Grid implements Serializable{
+    private static final long serialVersionUID = -5601662822842544495L;
+
     public ColorScheme colorScheme = ColorScheme.STANDARD;
     private CoordinateTransformer mGridToWorldTransformer = new CoordinateTransformer(0,0,1);
 

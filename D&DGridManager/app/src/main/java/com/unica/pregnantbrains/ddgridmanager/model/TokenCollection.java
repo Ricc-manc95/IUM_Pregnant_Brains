@@ -1,15 +1,14 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Util;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenCollection {
+public class TokenCollection implements Serializable {
+    private static final long serialVersionUID = 2236131403492884293L;
+
     private List<Token> tokens = new ArrayList<Token>();
 
     public List<Token> list() {

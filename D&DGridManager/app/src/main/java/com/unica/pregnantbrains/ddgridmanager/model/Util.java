@@ -1,6 +1,6 @@
-package com.unica.pregnantbrains.ddgridmanager.model.primitives;
+package com.unica.pregnantbrains.ddgridmanager.model;
 
-import android.graphics.PointF;
+import com.unica.pregnantbrains.ddgridmanager.model.PointF;
 
 /**
  * Random graphics utilities.

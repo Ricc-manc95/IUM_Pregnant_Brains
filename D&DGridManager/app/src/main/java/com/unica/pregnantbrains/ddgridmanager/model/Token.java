@@ -1,14 +1,13 @@
-package com.unica.pregnantbrains.ddgridmanager.model.primitives;
+package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
-import com.unica.pregnantbrains.ddgridmanager.model.BoundingRectangle;
-import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
+import java.io.Serializable;
 
-public class Token {
+public class Token implements Serializable{
+    private static final long serialVersionUID = 5115756536497241452L;
 
     private PointF location = new PointF(0, 0);
     private float size = 1.0f; // Relative diameter of the token (1.0 = occupies one grid square
@@ -62,6 +61,12 @@ public class Token {
         float radius = transformer.worldSpaceToScreenSpace(this.size * 0.9f / 2);
 
         c.drawCircle(center.x, center.y, radius, p);
+    }
+
+    public void draw(Canvas c, float x, float y, float radius) {
+        Paint p = new Paint();
+        p.setColor(color);
+        c.drawCircle(x, y, radius, p);
     }
 
     public void drawPreview(Canvas c, float x, float y, float radius) {

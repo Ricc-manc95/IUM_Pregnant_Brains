@@ -19,9 +19,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
@@ -31,7 +30,7 @@ import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPicker_Item;
 import com.unica.pregnantbrains.ddgridmanager.data.DataManager;
 import com.unica.pregnantbrains.ddgridmanager.model.Grid;
 import com.unica.pregnantbrains.ddgridmanager.model.GridData;
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
+import com.unica.pregnantbrains.ddgridmanager.model.Token;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 import java.util.ArrayList;
@@ -155,8 +154,6 @@ public class CombatGrid extends AppCompatActivity {
                 return true;
             }
         });
-
-        setTitle();
     }
 
     @Override
@@ -170,8 +167,10 @@ public class CombatGrid extends AppCompatActivity {
             GridData.clear();
             mData = GridData.getInstance();
             mGridView.setData(mData);
+            setTitle("untitled map");
         } else {
             loadMap(filename);
+            setTitle(filename);
         }
         mData.grid = Grid.createGrid(mData.grid.gridSpaceToWorldSpaceTransformer());
 
@@ -371,10 +370,10 @@ public class CombatGrid extends AppCompatActivity {
         }
     };
 
-    private void setTitle() {
+    private void setTitle(String gridName) {
 
         if (this.getSupportActionBar() == null) return;
-        this.getSupportActionBar().setTitle("untitled map");
+        this.getSupportActionBar().setTitle(gridName);
     }
 
     private void newPawn() {
@@ -400,12 +399,13 @@ public class CombatGrid extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         AlertDialog.Builder builder = new AlertDialog.Builder(CombatGrid.this);
                         LayoutInflater inflater = CombatGrid.this.getLayoutInflater();
-                        builder.setTitle("Grid name").setView(inflater.inflate(R.layout.save_dialog, null))
+                        View mView = inflater.inflate(R.layout.save_dialog, null);
+                        final EditText mText = (EditText) mView.findViewById(R.id.grid_name);
+                        builder.setTitle("Grid name").setView(mView)
                                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int i) {
-                                TextView nameText = findViewById(R.id.grid_name);
-                                String name = nameText.getText().toString();
+                                String name = mText.getText().toString();
                                 saveMap(name);
                                 setFilenamePreference(name);
                             }
@@ -473,7 +473,7 @@ public class CombatGrid extends AppCompatActivity {
                 mData.zoomToFit(mGridView.getWidth(), mGridView.getHeight());
                 return true;
             case R.id.clear_all:
-                mData.clear();
+                GridData.clear();
                 setFilenamePreference(null);
                 mData = GridData.getInstance();
                 mGridView.setData(mData);
@@ -514,6 +514,14 @@ public class CombatGrid extends AppCompatActivity {
 
             }
         }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        String filename = sharedPreferences.getString("filename", null);
+        if (filename == null) {
+            setFilenamePreference("tmp");
+            filename = "tmp";
+        }
+        saveMap(filename);
     }
 
     public void loadMap(String name) {

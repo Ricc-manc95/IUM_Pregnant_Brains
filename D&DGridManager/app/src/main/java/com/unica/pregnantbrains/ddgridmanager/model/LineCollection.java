@@ -1,14 +1,14 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Line;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LineCollection {
+public class LineCollection implements Serializable {
+    private static final long serialVersionUID = 2637613694555001119L;
+
     public List<Line> lines = new ArrayList<Line>();
 
     public void drawAllLines(Canvas canvas, CoordinateTransformer transformer) {

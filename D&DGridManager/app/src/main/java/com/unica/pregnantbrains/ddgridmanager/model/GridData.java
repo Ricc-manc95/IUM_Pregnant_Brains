@@ -1,13 +1,11 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Line;
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 /**
  * This is a data class that collects everything that makes up the current map state,
@@ -16,7 +14,9 @@ import java.io.OutputStream;
  * @author Tim
  *
  */
-public class GridData {
+public class GridData implements Serializable {
+    private static final long serialVersionUID = -8149242217047974867L;
+
     private GridData() {
 
     }

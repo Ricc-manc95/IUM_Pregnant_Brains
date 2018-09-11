@@ -1,7 +1,6 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
-import android.graphics.PointF;
-import android.support.design.widget.CoordinatorLayout;
+import java.io.Serializable;
 
 /**
  * Defines a transformation from one 2D coordinate system to another coordinate
@@ -10,10 +9,12 @@ import android.support.design.widget.CoordinatorLayout;
  * @author Pregnant Brains
  *
  */
-public final class CoordinateTransformer {
-    public float zoomLevel = 1.0f;
-    public float originX = 0.0f;
-    public float originY = 0.0f;
+public final class CoordinateTransformer implements Serializable {
+    private static final long serialVersionUID = 2257620065025443459L;
+
+    private float zoomLevel = 1.0f;
+    private float originX = 0.0f;
+    private float originY = 0.0f;
 
     public CoordinateTransformer(float originX, float originY, float zoomLevel) {
         this.originX = originX;

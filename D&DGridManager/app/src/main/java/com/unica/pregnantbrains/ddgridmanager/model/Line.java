@@ -1,13 +1,10 @@
-package com.unica.pregnantbrains.ddgridmanager.model.primitives;
+package com.unica.pregnantbrains.ddgridmanager.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
-import com.unica.pregnantbrains.ddgridmanager.model.BoundingRectangle;
-import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +13,9 @@ import java.util.List;
  * @author Pregnant Brains
  *
  */
-public class Line {
+public class Line implements Serializable {
+    private static final long serialVersionUID = 1431504565823371730L;
+
     private static float MIN_POINT_DISTANCE = 0;
 
     private int color = Color.BLACK;

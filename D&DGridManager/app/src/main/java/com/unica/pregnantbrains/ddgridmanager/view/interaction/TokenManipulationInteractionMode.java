@@ -1,14 +1,12 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
-import com.unica.pregnantbrains.ddgridmanager.CombatGrid;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Token;
-import com.unica.pregnantbrains.ddgridmanager.model.primitives.Util;
+import com.unica.pregnantbrains.ddgridmanager.model.PointF;
+import com.unica.pregnantbrains.ddgridmanager.model.Token;
+import com.unica.pregnantbrains.ddgridmanager.model.Util;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public class TokenManipulationInteractionMode extends ZoomPanInteractionMode {

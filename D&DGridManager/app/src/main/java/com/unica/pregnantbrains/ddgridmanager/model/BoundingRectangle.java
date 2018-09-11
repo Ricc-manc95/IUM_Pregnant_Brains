@@ -1,8 +1,11 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
-import android.graphics.PointF;
 
-public class BoundingRectangle {
+import java.io.Serializable;
+
+public class BoundingRectangle implements Serializable{
+    private static final long serialVersionUID = -1795363421941586135L;
+
     private float boundsXMin = Float.MAX_VALUE;
     private float boundsXMax = Float.MIN_VALUE;
     private float boundsYMin = Float.MAX_VALUE;
