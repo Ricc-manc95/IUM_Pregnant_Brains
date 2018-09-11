@@ -10,16 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPickerListViewAdapter;
 import com.unica.pregnantbrains.ddgridmanager.adapters.ColorPicker_Item;
 
 import java.util.ArrayList;
 
-public class PawnCreation extends AppCompatActivity {
+public class PawnCreation extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Toolbar mToolbar;
     private EditText text;
@@ -28,6 +31,7 @@ public class PawnCreation extends AppCompatActivity {
     private String name;
     private int color;
     private String colorName;
+    private float size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,13 @@ public class PawnCreation extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(null);
 
-        changecolor=findViewById(R.id.colorbutton);
+        Spinner mSpinner = (Spinner) this.findViewById(R.id.pawn_size);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.size_pawn, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(this);
+
+        changecolor = findViewById(R.id.colorbutton);
 
         changecolor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,17 +66,17 @@ public class PawnCreation extends AppCompatActivity {
 
                 ArrayList<ColorPicker_Item> listitem = new ArrayList<>();
                 ColorPicker_Item col1 = new ColorPicker_Item(R.drawable.pomodoro, "Pomodoro");
-                ColorPicker_Item col2 = new ColorPicker_Item(R.drawable.mandarino,"Mandarino");
-                ColorPicker_Item col3 = new ColorPicker_Item(R.drawable.banana,"Banana");
-                ColorPicker_Item col4 = new ColorPicker_Item(R.drawable.basilico,"Basilico");
-                ColorPicker_Item col5 = new ColorPicker_Item(R.drawable.salvia,"Salvia");
+                ColorPicker_Item col2 = new ColorPicker_Item(R.drawable.mandarino, "Mandarino");
+                ColorPicker_Item col3 = new ColorPicker_Item(R.drawable.banana, "Banana");
+                ColorPicker_Item col4 = new ColorPicker_Item(R.drawable.basilico, "Basilico");
+                ColorPicker_Item col5 = new ColorPicker_Item(R.drawable.salvia, "Salvia");
                 ColorPicker_Item col6 = new ColorPicker_Item(R.drawable.pavone, "Pavone");
-                ColorPicker_Item col7 = new ColorPicker_Item(R.drawable.mirtillo,"Mirtillo");
-                ColorPicker_Item col8 = new ColorPicker_Item(R.drawable.lavanda,"Lavanda");
-                ColorPicker_Item col9 = new ColorPicker_Item(R.drawable.vinaccia,"Vinaccia");
-                ColorPicker_Item col10 = new ColorPicker_Item(R.drawable.fenicottero,"Fenicottero");
-                ColorPicker_Item col11 = new ColorPicker_Item(R.drawable.grafite,"Grafite");
-                ColorPicker_Item col12 = new ColorPicker_Item(R.drawable.classic,"Colore predefinito");
+                ColorPicker_Item col7 = new ColorPicker_Item(R.drawable.mirtillo, "Mirtillo");
+                ColorPicker_Item col8 = new ColorPicker_Item(R.drawable.lavanda, "Lavanda");
+                ColorPicker_Item col9 = new ColorPicker_Item(R.drawable.vinaccia, "Vinaccia");
+                ColorPicker_Item col10 = new ColorPicker_Item(R.drawable.fenicottero, "Fenicottero");
+                ColorPicker_Item col11 = new ColorPicker_Item(R.drawable.grafite, "Grafite");
+                ColorPicker_Item col12 = new ColorPicker_Item(R.drawable.classic, "Colore predefinito");
 
                 listitem.add(col1);
                 listitem.add(col2);
@@ -81,7 +91,7 @@ public class PawnCreation extends AppCompatActivity {
                 listitem.add(col11);
                 listitem.add(col12);
 
-                ColorPickerListViewAdapter clad = new ColorPickerListViewAdapter(PawnCreation.this, R.layout.colorpickeritem,listitem);
+                ColorPickerListViewAdapter clad = new ColorPickerListViewAdapter(PawnCreation.this, R.layout.colorpickeritem, listitem);
 
                 builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -100,7 +110,7 @@ public class PawnCreation extends AppCompatActivity {
                         builderInner.setTitle("Your Selected Item is");
                         builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog,int which) {
+                            public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
@@ -137,6 +147,7 @@ public class PawnCreation extends AppCompatActivity {
                 setResult(CombatGrid.RESULT_OK, returnIntent);
                 returnIntent.putExtra("name", text.getText().toString());
                 returnIntent.putExtra("color", fromColorPicker(colorName));
+                returnIntent.putExtra("size", size);
                 //setResult(CombatGrid.RESULT_CANCELED, returnIntent);
                 finish();
             default:
@@ -172,4 +183,41 @@ public class PawnCreation extends AppCompatActivity {
                 return Color.rgb(164, 189, 252);
         }
     }
+
+    private float fromSpinner(String size) {
+        switch (size) {
+            case "Fine":
+                return 0.05125f;
+            case "Diminutive":
+                return 0.125f;
+            case "Tiny":
+                return 0.25f;
+            case "Small":
+                return 0.5f;
+            case "Medium":
+                return 1.0f;
+            case "Large":
+                return 2.0f;
+            case "Huge":
+                return 3.0f;
+            case "Gargantuan":
+                return 4.0f;
+            case "Colossal":
+                return 5.0f;
+            default:
+                return 1.0f;
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String s = adapterView.getItemAtPosition(i).toString();
+        size = fromSpinner(s);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        size = fromSpinner("Medium");
+    }
 }
+

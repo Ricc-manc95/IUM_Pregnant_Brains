@@ -10,14 +10,15 @@ public final class Token implements Serializable{
     private static final long serialVersionUID = 5115756536497241452L;
 
     private PointF location = new PointF(0, 0);
-    private float size = 1.0f; // Relative diameter of the token (1.0 = occupies one grid square
+    private float size; // Relative diameter of the token (1.0 = occupies one grid square
     private int color;
     private String name;
     private String letters;
 
-    public Token(int c, String name) {
+    public Token(int c, String name, float size) {
         this.color = c;
         this.name = name;
+        this.size = size;
         setLetters(name);
     }
 
@@ -42,7 +43,7 @@ public final class Token implements Serializable{
     }
 
     public Token clone() {
-        return new Token(color, name);
+        return new Token(color, name, size);
     }
 
     /**

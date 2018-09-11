@@ -514,7 +514,8 @@ public final class CombatGrid extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String name = data.getStringExtra("name");
                 int color = data.getIntExtra("color", 1);
-                mGridView.placeToken(new Token(color, name));
+                float size = data.getFloatExtra("size", 1.0f);
+                mGridView.placeToken(new Token(color, name, size));
             } else if (resultCode == RESULT_CANCELED) {
 
             }
