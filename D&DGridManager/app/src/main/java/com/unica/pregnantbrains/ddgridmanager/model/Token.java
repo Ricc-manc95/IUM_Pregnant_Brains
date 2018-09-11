@@ -24,7 +24,7 @@ public final class Token implements Serializable{
 
     public void drawInPosition(Canvas c, CoordinateTransformer transformer) {
         PointF center = transformer.worldSpaceToScreenSpace(location);
-        float radius = transformer.worldSpaceToScreenSpace(this.size * 0.9f / 2);
+        float radius = transformer.worldSpaceToScreenSpace(this.size / 2 * 0.9f);
 
         Paint p = new Paint();
         p.setColor(color);

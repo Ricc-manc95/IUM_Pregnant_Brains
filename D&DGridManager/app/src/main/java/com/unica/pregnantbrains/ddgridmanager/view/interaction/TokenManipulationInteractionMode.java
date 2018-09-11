@@ -10,7 +10,7 @@ import com.unica.pregnantbrains.ddgridmanager.model.Util;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 public final class TokenManipulationInteractionMode extends ZoomPanInteractionMode {
-    private static final int GRID_SNAP_THRESHOLD = 20;
+    private static final int GRID_SNAP_THRESHOLD = 100;
     public TokenManipulationInteractionMode(GridView view) {
         super(view);
         // TODO Auto-generated constructor stub

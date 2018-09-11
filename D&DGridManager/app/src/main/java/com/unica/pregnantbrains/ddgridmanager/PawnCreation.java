@@ -187,13 +187,13 @@ public class PawnCreation extends AppCompatActivity implements AdapterView.OnIte
     private float fromSpinner(String size) {
         switch (size) {
             case "Fine":
-                return 0.05125f;
-            case "Diminutive":
                 return 0.125f;
-            case "Tiny":
+            case "Diminutive":
                 return 0.25f;
-            case "Small":
+            case "Tiny":
                 return 0.5f;
+            case "Small":
+                return 0.75f;
             case "Medium":
                 return 1.0f;
             case "Large":
