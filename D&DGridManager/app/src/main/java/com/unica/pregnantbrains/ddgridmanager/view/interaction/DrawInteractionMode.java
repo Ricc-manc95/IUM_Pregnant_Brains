@@ -1,11 +1,13 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
+import android.graphics.Point;
 import android.view.MotionEvent;
 
 import com.unica.pregnantbrains.ddgridmanager.model.Line;
 import com.unica.pregnantbrains.ddgridmanager.model.PointF;
 import com.unica.pregnantbrains.ddgridmanager.model.Util;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
+import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 
 public final class DrawInteractionMode extends GridViewInteractionMode {
     private float lastPointX;
@@ -29,10 +31,26 @@ public final class DrawInteractionMode extends GridViewInteractionMode {
 
         return true;
     }
-    private void addLinePoint(MotionEvent e2) {
-        currentLine.addPoint(view.getTransformer().screenSpaceToWorldSpace(new PointF(e2.getX(), e2.getY())));
-        view.invalidate();lastPointX = e2.getX();
-        lastPointY = e2.getY();
+    private void addLinePoint(final MotionEvent e) {
+        PointF p = getScreenSpacePoint(e);
+        currentLine./*addPoint*/setEndPoint(view.getTransformer().screenSpaceToWorldSpace(/*new PointF(e2.getX(), e2.getY()))*/p));
+        view.invalidate();
+        lastPointX = p.x;
+        lastPointY = p.y;
+        //lastPointX = e.getX();
+        //lastPointY = e.getY();
+    }
+
+    /**
+     * Gets the draw location in screen space.  Snaps to the grid if necessary.
+     * @param e The motion event to get the point from.
+     * @return The point in screen space.
+     */
+    private PointF getScreenSpacePoint(final MotionEvent e) {
+        PointF p = new PointF(e.getX(), e.getY());
+        CoordinateTransformer transformer = view.getGridSpaceTransformer();
+        p = transformer.worldSpaceToScreenSpace(view.getData().getGrid().getNearestSnapPoint(transformer.screenSpaceToWorldSpace(p), 0));
+        return p;
     }
 
     private boolean shouldDrawLine(float newPointX, float newPointY) {
@@ -41,8 +59,11 @@ public final class DrawInteractionMode extends GridViewInteractionMode {
 
     public boolean onDown(MotionEvent e) {
         currentLine = view.createLine();
-        lastPointX = e.getX();
-        lastPointY = e.getY();
+        PointF p = getScreenSpacePoint(e);
+        lastPointX = p.x;
+        lastPointY = p.y;
+        //lastPointX = e.getX();
+        //lastPointY = e.getY();
         return true;
     }
 }

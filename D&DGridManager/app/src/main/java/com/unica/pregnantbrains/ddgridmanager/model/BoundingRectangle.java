@@ -2,6 +2,7 @@ package com.unica.pregnantbrains.ddgridmanager.model;
 
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public class BoundingRectangle implements Serializable{
     private static final long serialVersionUID = -1795363421941586135L;
@@ -58,5 +59,15 @@ public class BoundingRectangle implements Serializable{
                center.x - radius <= boundsXMax &&
                center.y + radius >= boundsYMin &&
                center.y - radius <= boundsYMax;
+    }
+
+    /**
+     * Updates the bounds for an entire collection of points.
+     * @param points The points to update with.
+     */
+    public void updateBounds(final Collection<PointF> points) {
+        for (PointF p : points) {
+            updateBounds(p);
+        }
     }
 }

@@ -350,7 +350,6 @@ public final class CombatGrid extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             mGridView.setNewLineStroke(i);
-                            Toast.makeText(CombatGrid.this, ""+mGridView.newLineStrokeWidth, Toast.LENGTH_SHORT).show();
                             //mGridView.setDrawMode();
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

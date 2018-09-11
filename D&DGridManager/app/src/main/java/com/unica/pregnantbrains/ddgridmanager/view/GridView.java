@@ -36,7 +36,7 @@ public final class GridView extends View {
     private LineCollection mActiveLines;
 
     public int newLineColor = Color.BLACK; /***QUI SI SCEGLIERANNO I COLORI DELLE LINEE*/
-    public int newLineStrokeWidth = 2;
+    public float newLineStrokeWidth = .2f;
     private GridData mData;
 
     public GridView(Context context/*, GridData data*/) {
@@ -114,11 +114,21 @@ public final class GridView extends View {
     public void onDraw(Canvas canvas) {
         // White background
         getData().grid.draw(canvas, getData().transformer);
-        getData().mBackgroundLines.drawAllLines(canvas, getData().transformer);
+        //getData().mBackgroundLines.drawAllLines(canvas, getData().transformer);
+
+        //canvas.save();
+        //getData().transformer.setMatrix(canvas);
+        getData().getBackgroundLines().drawAllLines(canvas, getData().transformer);
+        //canvas.restore();
+
         getData().tokens.drawAllTokens(canvas, getGridSpaceTransformer());
 
         if (this.shouldDrawTokens) {
-            getData().mAnnotationLines.drawAllLines(canvas, getData().transformer);
+            //getData().mAnnotationLines.drawAllLines(canvas, getData().transformer);
+            //canvas.save();
+            //getData().transformer.setMatrix(canvas);
+            getData().getAnnotationLines().drawAllLines(canvas, getData().transformer);
+            //canvas.restore();
         }
 
         this.mGestureListener.draw(canvas);
@@ -183,7 +193,24 @@ public final class GridView extends View {
     }
 
     public void setNewLineStroke (int i) {
-        this.newLineStrokeWidth = (i+1)*2;
+        float w;
+        switch (i) {
+            case 0:
+                w = .05f;
+                break;
+            case 1:
+                w = .1f;
+                break;
+            case 2:
+                w = .2f;
+                break;
+            case 3:
+                w = .4f;
+                break;
+            default:
+                w = .05f;
+        }
+        this.newLineStrokeWidth = w;
     }
 
     public void setNewLineColor(int c){
@@ -205,9 +232,18 @@ public final class GridView extends View {
         Bitmap bitmap = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         getData().grid.drawBackground(canvas);
-        getData().mBackgroundLines.drawAllLines(canvas, getData().transformer);
+        //getData().mBackgroundLines.drawAllLines(canvas, getData().transformer);
+        //canvas.save();
+        //getData().transformer.setMatrix(canvas);
+        getData().getBackgroundLines().drawAllLines(canvas, getData().transformer);
+        //canvas.restore();
+
         getData().tokens.drawAllTokens(canvas, getGridSpaceTransformer());
-        getData().mAnnotationLines.drawAllLines(canvas, getData().transformer);
+        //getData().mAnnotationLines.drawAllLines(canvas, getData().transformer);
+        //canvas.save();
+        //getData().transformer.setMatrix(canvas);
+        getData().getAnnotationLines().drawAllLines(canvas, getData().transformer);
+        //canvas.restore();
 
         return bitmap;
     }

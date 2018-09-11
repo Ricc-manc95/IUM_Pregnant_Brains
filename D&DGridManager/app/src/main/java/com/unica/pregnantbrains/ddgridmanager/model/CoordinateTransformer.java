@@ -1,5 +1,7 @@
 package com.unica.pregnantbrains.ddgridmanager.model;
 
+import android.graphics.Canvas;
+
 import java.io.Serializable;
 
 /**
@@ -117,5 +119,10 @@ public final class CoordinateTransformer implements Serializable {
     public void setZoom(float zoomLevel) {
         this.zoomLevel = zoomLevel;
 
+    }
+
+    public void setMatrix (Canvas c) {
+        c.translate(originX, originY);
+        c.scale(zoomLevel, zoomLevel);
     }
 }

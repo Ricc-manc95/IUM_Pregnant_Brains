@@ -14,12 +14,15 @@ public class LineCollection implements Serializable {
     public List<Line> lines = new LinkedList<Line>();
 
     public void drawAllLines(Canvas canvas, CoordinateTransformer transformer) {
+        canvas.save();
+        transformer.setMatrix(canvas);
         for (int i = 0; i < lines.size(); ++i){
-            lines.get(i).draw(canvas, transformer);
+            lines.get(i).draw(canvas/*, transformer*/);
         }
+        canvas.restore();
     }
 
-    public Line createLine(int newLineColor, int newLineStrokeWidth) {
+    public Line createLine(int newLineColor, float newLineStrokeWidth) {
         Line l = new Line(newLineColor, newLineStrokeWidth);
         insertLine(l);
         return l;

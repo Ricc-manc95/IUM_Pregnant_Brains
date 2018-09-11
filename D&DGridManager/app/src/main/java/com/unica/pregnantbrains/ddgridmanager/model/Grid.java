@@ -120,7 +120,7 @@ public class Grid implements Serializable{
 
         // If we have a token that is smaller than one grid line, find the nearest subgrid
         // line instead.
-        if (tokenDiameter < 1) {
+        if (tokenDiameter < 1 && tokenDiameter != 0) {
             previousGridLineX += (currentLocation.x - previousGridLineX) - (currentLocation.x - previousGridLineX) % tokenDiameter;
             previousGridLineY += (currentLocation.y - previousGridLineY) - (currentLocation.y - previousGridLineY) % tokenDiameter;
         }
