@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenCollection implements Serializable {
+public final class TokenCollection implements Serializable {
     private static final long serialVersionUID = 2236131403492884293L;
 
     private List<Token> tokens = new ArrayList<Token>();
@@ -89,6 +89,12 @@ public class TokenCollection implements Serializable {
             tokens.get(i).drawInPosition(canvas, transformer);
         }
 
+    }
+    /**
+     * @return True if this collection has no lines in it, False otherwise.
+     */
+    public boolean isEmpty() {
+        return tokens.isEmpty();
     }
 
     public List<Token> getTokens() {

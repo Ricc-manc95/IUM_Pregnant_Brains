@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Tim
  *
  */
-public class GridData implements Serializable {
+public final class GridData implements Serializable {
     private static final long serialVersionUID = -8149242217047974867L;
 
     private GridData() {
@@ -79,5 +79,49 @@ public class GridData implements Serializable {
 
         this.transformer.setZoom(scaleFactor);
         this.transformer.setOriginInWorldSpace(r.getXMin(), r.getYMin());
+    }
+
+    /**
+    *@return Whether anything has been placed on the map.
+    */
+    public boolean hasData() {
+        return !mBackgroundLines.isEmpty()
+                && !mAnnotationLines.isEmpty()
+                && !getTokens().isEmpty();
+    }
+
+    /**
+     * @return the backgroundLines
+     */
+    public LineCollection getBackgroundLines() {
+        return mBackgroundLines;
+    }
+
+    /**
+     * @return the annotationLines
+     */
+    public LineCollection getAnnotationLines() {
+        return mAnnotationLines;
+    }
+
+    /**
+     * @return the tokens
+     */
+    public TokenCollection getTokens() {
+        return tokens;
+    }
+
+    /**
+     * @param grid the grid to set
+     */
+    public void setGrid(final Grid grid) {
+        this.grid = grid;
+    }
+
+    /**
+     * @return the grid
+     */
+    public Grid getGrid() {
+        return grid;
     }
 }

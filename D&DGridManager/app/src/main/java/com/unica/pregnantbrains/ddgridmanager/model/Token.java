@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import java.io.Serializable;
 
-public class Token implements Serializable{
+public final class Token implements Serializable{
     private static final long serialVersionUID = 5115756536497241452L;
 
     private PointF location = new PointF(0, 0);

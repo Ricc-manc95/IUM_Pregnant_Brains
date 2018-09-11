@@ -6,7 +6,7 @@ import android.view.ScaleGestureDetector;
 import com.unica.pregnantbrains.ddgridmanager.model.PointF;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
-public class GridRepositioningInteractionMode extends GridViewInteractionMode {
+public final class GridRepositioningInteractionMode extends GridViewInteractionMode {
     public GridRepositioningInteractionMode(GridView view) {
         super(view);
     }

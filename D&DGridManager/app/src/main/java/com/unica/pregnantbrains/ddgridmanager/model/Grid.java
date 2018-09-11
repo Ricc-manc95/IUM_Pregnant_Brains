@@ -8,6 +8,31 @@ import java.io.Serializable;
 public class Grid implements Serializable{
     private static final long serialVersionUID = -5601662822842544495L;
 
+    /**
+     * Every MAJOR_GRID_LINE_FREQUENCYth line will be a major grid line.
+     */
+    private static final int MAJOR_GRID_LINE_FREQUENCY = 5;
+
+    /**
+     * Maximum size of squares formed by major grid lines in pixels.
+     */
+    private static final int MAJOR_GRID_LINE_SIZE_LIMIT = 4;
+
+    /**
+     * Maximum size of squares formed by minor grid lines in pixels.
+     */
+    private static final int MINOR_GRID_LINE_SIZE_LIMIT = 8;
+
+    /**
+     * Width to draw major grid lines with.
+     */
+    private static final float MAJOR_GRID_LINE_WIDTH = 3;
+
+    /**
+     * Width to draw minor grid lines with.
+     */
+    private static final float MINOR_GRID_LINE_WIDTH = 3;
+
     public ColorScheme colorScheme = ColorScheme.STANDARD;
     private CoordinateTransformer mGridToWorldTransformer = new CoordinateTransformer(0,0,1);
 
@@ -16,7 +41,7 @@ public class Grid implements Serializable{
         drawGrid(canvas, transformer);
     }
 
-    private void drawBackground(Canvas canvas) {
+    public void drawBackground(Canvas canvas) {
         canvas.drawColor(colorScheme.getBackgroundColor());
     }
 
@@ -40,32 +65,50 @@ public class Grid implements Serializable{
         float numSquaresHorizontal = (float)width/squareSize;
         float numSquaresVertical = (numSquaresHorizontal * ((float)height)/((float)width));
 
+        boolean shouldDrawMinorLines = squareSize >= MINOR_GRID_LINE_SIZE_LIMIT;
+        boolean shouldDrawMajorLines = squareSize >= MAJOR_GRID_LINE_SIZE_LIMIT;
+        boolean shouldDrawCurrentLine = true;
+
         PointF origin = transformer.getOrigin();
 
         float offsetX = origin.x % squareSize;
         float offsetY = origin.y % squareSize;
 
-        int thickLineStartX = (int)((origin.x % (squareSize * 5)) / squareSize);
-        int thickLineStartY = (int)((origin.y % (squareSize * 5)) / squareSize);
+        int thickLineStartX = (int)((origin.x % (squareSize * MAJOR_GRID_LINE_FREQUENCY)) / squareSize);
+        int thickLineStartY = (int)((origin.y % (squareSize * MAJOR_GRID_LINE_FREQUENCY)) / squareSize);
 
         for (int i = 0; i <= numSquaresHorizontal; ++i) {
-            if ((i-thickLineStartX)%5 == 0) {
-                paint.setStrokeWidth(2);
+            if ((i-thickLineStartX)%MAJOR_GRID_LINE_FREQUENCY == 0) {
+                //paint.setStrokeWidth(2);
+                paint.setStrokeWidth(shouldDrawMinorLines ? MAJOR_GRID_LINE_WIDTH : MINOR_GRID_LINE_WIDTH);
+                shouldDrawCurrentLine = shouldDrawMajorLines;
             }
             else {
                 paint.setStrokeWidth(1);
+                shouldDrawCurrentLine = shouldDrawMinorLines;
             }
-            canvas.drawLine(i * squareSize + offsetX, 0, i * squareSize + offsetX, height, paint);
+
+            if (shouldDrawCurrentLine) {
+                canvas.drawLine(i * squareSize + offsetX, 0, i * squareSize + offsetX, height, paint);
+            }
+            //canvas.drawLine(i * squareSize + offsetX, 0, i * squareSize + offsetX, height, paint);
         }
 
         for (int i = 0; i <= numSquaresVertical; ++i) {
-            if ((i-thickLineStartY)%5 == 0) {
-                paint.setStrokeWidth(3);
+            if ((i-thickLineStartY)%MAJOR_GRID_LINE_FREQUENCY == 0) {
+                //paint.setStrokeWidth(3);
+                paint.setStrokeWidth(shouldDrawMinorLines ? MAJOR_GRID_LINE_WIDTH : MINOR_GRID_LINE_WIDTH);
+                shouldDrawCurrentLine = shouldDrawMajorLines;
             }
             else {
                 paint.setStrokeWidth(1);
+                shouldDrawCurrentLine = shouldDrawMinorLines;
             }
-            canvas.drawLine(0, i * squareSize + offsetY, width, i * squareSize + offsetY, paint);
+
+            if (shouldDrawCurrentLine) {
+                canvas.drawLine(0, i * squareSize + offsetY, width, i * squareSize + offsetY, paint);
+            }
+            //canvas.drawLine(0, i * squareSize + offsetY, width, i * squareSize + offsetY, paint);
         }
     }
 

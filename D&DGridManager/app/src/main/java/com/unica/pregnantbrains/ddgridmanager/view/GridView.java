@@ -1,6 +1,7 @@
 package com.unica.pregnantbrains.ddgridmanager.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,7 +25,7 @@ import com.unica.pregnantbrains.ddgridmanager.view.interaction.GridRepositioning
 import com.unica.pregnantbrains.ddgridmanager.view.interaction.GridViewInteractionMode;
 import com.unica.pregnantbrains.ddgridmanager.view.interaction.TokenManipulationInteractionMode;
 
-public class GridView extends View {
+public final class GridView extends View {
     Paint paint = new Paint();
 
     boolean shouldDrawTokens = false;
@@ -191,10 +192,23 @@ public class GridView extends View {
     }
 
     public void setData(GridData data) {
+        boolean useBackgroundLines = (mData == null) || this.mActiveLines == mData.getBackgroundLines();
         mData = data;
+        this.mActiveLines = useBackgroundLines ? mData.getBackgroundLines() : mData.getAnnotationLines();
         invalidate();
     }
     public GridData getData() {
         return mData;
+    }
+
+    public Bitmap getPreview() {
+        Bitmap bitmap = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        getData().grid.drawBackground(canvas);
+        getData().mBackgroundLines.drawAllLines(canvas, getData().transformer);
+        getData().tokens.drawAllTokens(canvas, getGridSpaceTransformer());
+        getData().mAnnotationLines.drawAllLines(canvas, getData().transformer);
+
+        return bitmap;
     }
 }

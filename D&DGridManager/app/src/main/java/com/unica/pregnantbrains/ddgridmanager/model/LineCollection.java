@@ -4,12 +4,14 @@ import android.graphics.Canvas;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class LineCollection implements Serializable {
     private static final long serialVersionUID = 2637613694555001119L;
 
-    public List<Line> lines = new ArrayList<Line>();
+    public List<Line> lines = new LinkedList<Line>();
 
     public void drawAllLines(Canvas canvas, CoordinateTransformer transformer) {
         for (int i = 0; i < lines.size(); ++i){
@@ -19,8 +21,28 @@ public class LineCollection implements Serializable {
 
     public Line createLine(int newLineColor, int newLineStrokeWidth) {
         Line l = new Line(newLineColor, newLineStrokeWidth);
-        lines.add(l);
+        insertLine(l);
         return l;
+    }
+
+    /**
+     * Inserts a new line into the list of lines, making sure that the lines are
+     * sorted by line width.
+     * @param line The line to add.
+     */
+    private void insertLine(final Line line) {
+        if (lines.isEmpty()) {
+            lines.add(line);
+            return;
+        }
+
+        ListIterator<Line> it = lines.listIterator();
+        while (it.hasNext()
+                && lines.get(it.nextIndex()).getStrokeWidth()
+                >= line.getStrokeWidth()) {
+            it.next();
+        }
+        it.add(line);
     }
 
     public void clear() {
@@ -36,12 +58,18 @@ public class LineCollection implements Serializable {
     }
 
     public void optimize() {
-        List<Line> newLines = new ArrayList<Line>();
+        List<Line> newLines = new LinkedList<Line>();
         for (int i = 0; i < lines.size(); ++i) {
             List<Line> optimizedLines = lines.get(i).removeErasedPoints();
             newLines.addAll(optimizedLines);
         }
         lines.clear();
         lines.addAll(newLines);
+    }
+    /**
+     * @return True if this collection has no lines in it, False otherwise.
+     */
+    public boolean isEmpty() {
+        return lines.isEmpty();
     }
 }

@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import com.unica.pregnantbrains.ddgridmanager.model.PointF;
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
-public class EraserInteractionMode extends GridViewInteractionMode {
+public final class EraserInteractionMode extends GridViewInteractionMode {
 
     private static final float ERASER_RADIUS = 30;
     private boolean erasing;

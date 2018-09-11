@@ -13,10 +13,8 @@ import java.util.List;
  * @author Pregnant Brains
  *
  */
-public class Line implements Serializable {
+public final class Line implements Serializable {
     private static final long serialVersionUID = 1431504565823371730L;
-
-    private static float MIN_POINT_DISTANCE = 0;
 
     private int color = Color.BLACK;
     private int width = 2;
@@ -31,15 +29,9 @@ public class Line implements Serializable {
     }
 
     public void addPoint (PointF p) {
-        if (points.size() == 0 || isFarEnoughFromLastPoint(p)) {
-            points.add(p);
-            shouldDraw.add(true);
-            boundingRectangle.updateBounds(p);
-        }
-    }
-
-    private boolean isFarEnoughFromLastPoint(PointF p) {
-        return Util.distance(p, points.get(points.size() - 1)) > MIN_POINT_DISTANCE;
+        points.add(p);
+        shouldDraw.add(true);
+        boundingRectangle.updateBounds(p);
     }
 
 
@@ -94,5 +86,12 @@ public class Line implements Serializable {
 
     public BoundingRectangle getBoundingRectangle() {
         return boundingRectangle;
+    }
+
+    /**
+     * @return This line's stroke width.
+     */
+    public int getStrokeWidth() {
+        return this.width;
     }
 }

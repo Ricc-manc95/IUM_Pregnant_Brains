@@ -35,7 +35,7 @@ import com.unica.pregnantbrains.ddgridmanager.view.GridView;
 
 import java.util.ArrayList;
 
-public class CombatGrid extends AppCompatActivity {
+public final class CombatGrid extends AppCompatActivity {
 
     private static final String TAG = CombatGrid.class.getSimpleName();
     private static final int NEW_PAWN_REQUEST = 1;
@@ -193,6 +193,9 @@ public class CombatGrid extends AppCompatActivity {
         // TODO Auto-generated method stub
         try {
             new DataManager(getApplicationContext()).saveMapName(name);
+            DataManager dm = new DataManager(getApplicationContext());
+            dm.saveMapName(name);
+            dm.saveImage(name + ".preview", mGridView.getPreview());
         } catch (Exception e) {
             reportIOException(e, "save");
             GridData.clear();
@@ -203,7 +206,9 @@ public class CombatGrid extends AppCompatActivity {
     private void reportIOException(Exception e, String attemptedAction) {
         Log.e(TAG, "Could not " + attemptedAction + " file.  Reason:");
         Log.e(TAG, e.toString());
-        //TODO(tim.bocek): Report this in a more user-friendly way.
+        e.printStackTrace();
+        Toast toast = Toast.makeText(this.getApplicationContext(), "Could not " + attemptedAction + " file.  Reason:" + e.toString(), Toast.LENGTH_LONG);
+        toast.show();
     }
     private void setFilenamePreference(String newFilename) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
@@ -535,6 +540,7 @@ public class CombatGrid extends AppCompatActivity {
         mData = GridData.getInstance();
         mGridView.setData(mData);
     }
+
     private int fromColorPicker(String colorName) {
         switch (colorName) {
             case "Pomodoro":
