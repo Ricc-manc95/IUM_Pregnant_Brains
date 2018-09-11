@@ -30,6 +30,12 @@
         android:hint="Insert number"
         android:inputType="number" />
 
+    <Button
+        android:id="@+id/buttoncolorobstacle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Color:" />
+
     <TextView
         android:id="@+id/size_obstacle"
         android:layout_width="match_parent"
