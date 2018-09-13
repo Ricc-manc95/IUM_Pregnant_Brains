@@ -5,5 +5,5 @@
         android:id="@+id/save_obstacle"
         android:orderInCategory="100"
         android:title="@string/creation_save"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always" />
 </menu>

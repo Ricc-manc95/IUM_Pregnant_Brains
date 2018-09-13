@@ -577,4 +577,8 @@ public final class CombatGrid extends AppCompatActivity {
                 return Color.rgb(164, 189, 252);
         }
     }
+
+    public SpeedDialView getmSpeedDialView() {
+        return mSpeedDialView;
+    }
 }

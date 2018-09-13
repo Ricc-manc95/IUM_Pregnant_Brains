@@ -79,39 +79,4 @@ public class SaveFileAdapter extends ArrayAdapter<String> {
         return mSelectedItemsIds;
     }
 
-
-
-
-
-    /*private String[] saveFile;
-
-    public SaveFileAdapter (Context context, int textViewResourceId, String[] saveFile) {
-        super (context, textViewResourceId, saveFile);
-        this.saveFile = saveFile;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
-        if (v == null) {
-            LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.saved_grid_list, null);
-        }
-
-        String it = saveFile[position];
-        if (it != null) {
-            ImageView iv = (ImageView) v.findViewById(R.id.saved_grid_image);
-            if (iv != null) {
-                iv.setImageDrawable(it.getImage());
-            }
-        }
-
-        return v;
-    }
-}
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        this.adapter.getItem(position).click(this.getApplicationContext());
-    }*/
 }

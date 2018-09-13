@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionModeBackground">@color/colorPrimaryDark</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:textColor">@color/material_black_1000</item>
+        <item name="android:itemBackground">@color/material_white_1000</item>
     </style>
 
     <style name="AppTheme.Fab" parent="AppTheme">
@@ -18,15 +20,14 @@
         <item name="colorControlHighlight">@color/material_orange_400</item>
     </style>
 
-    <style name="CreationBarTheme" parent="AppTheme">
+    <style name="AppTheme.CreationBarTheme" parent="AppTheme">
         <item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
+        <item name="android:textColorPrimary">@color/material_white_1000</item>
+        <item name="android:textAllCaps">true</item>
     </style>
-
-    <style name="CreationToolbarTheme" parent="AppTheme" />
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="colorButtonNormal">@color/colorPrimaryDark</item>
         <item name="android:textColor">@color/material_white_1000</item>
     </style>
-
 </resources>

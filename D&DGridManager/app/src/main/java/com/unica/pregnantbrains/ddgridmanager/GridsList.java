@@ -1,6 +1,8 @@
 package com.unica.pregnantbrains.ddgridmanager;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,7 +41,7 @@ public class GridsList extends AppCompatActivity /*implements ActionMode.Callbac
     private ListView listView;
     private android.support.v7.widget.Toolbar mToolbar;
     private List<String> list;
-    private int count = 0;
+    private boolean delete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,18 +104,30 @@ public class GridsList extends AppCompatActivity /*implements ActionMode.Callbac
                 switch (menuItem.getItemId()) {
                     case R.id.delete_grid:
                         SparseBooleanArray selected = adapter.getSelectedIds();
-                        for (int i = (selected.size() - 1); i >= 0; i--) {
-                            if (selected.valueAt(i)) {
-                                String selectedItem = adapter.getItem(selected.keyAt(i));
-                                dataMgr.deleteSaveFile(selectedItem);
-                                adapter.remove(selectedItem);
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        for (int j = (selected.size() - 1); j >= 0; j--) {
+                                            if (selected.valueAt(j)) {
+                                                String selectedItem = adapter.getItem(selected.keyAt(j));
+                                                dataMgr.deleteSaveFile(selectedItem);
+                                                adapter.remove(selectedItem);
+                                            }
+                                        }
+                                        break;
+
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        dialog.dismiss();
+                                        break;
+                                }
                             }
-                        }
-                        /*for (String s : list) {
-                            adapter.remove(s);
-                        }
-                        Toast.makeText(getBaseContext(), count + " items deleted", Toast.LENGTH_SHORT).show();
-                        count = 0;*/
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(GridsList.this);
+                        builder.setMessage("Delete selected grids?").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
                         actionMode.finish();
                         return true;
                     default:
@@ -166,5 +181,9 @@ public class GridsList extends AppCompatActivity /*implements ActionMode.Callbac
         intent.putExtra("newMap", 1);
         startActivity(intent);
         finish();
+    }
+
+    public void setDelete(boolean delete) {
+        this.delete = delete;
     }
 }
