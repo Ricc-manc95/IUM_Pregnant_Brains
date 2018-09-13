@@ -584,7 +584,6 @@ public final class CombatGrid extends AppCompatActivity {
         }
     }
 
-    public SpeedDialView getmSpeedDialView() {
-        return mSpeedDialView;
+    public void startTokenEditActivity () {
     }
 }

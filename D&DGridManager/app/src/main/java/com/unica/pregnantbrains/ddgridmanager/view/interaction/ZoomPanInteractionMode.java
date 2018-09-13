@@ -1,5 +1,6 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 
 import com.unica.pregnantbrains.ddgridmanager.view.GridView;

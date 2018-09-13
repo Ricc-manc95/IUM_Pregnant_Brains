@@ -1,8 +1,15 @@
 package com.unica.pregnantbrains.ddgridmanager.view.interaction;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
+import com.unica.pregnantbrains.ddgridmanager.CombatGrid;
+import com.unica.pregnantbrains.ddgridmanager.GridsList;
+import com.unica.pregnantbrains.ddgridmanager.TokenEdit;
 import com.unica.pregnantbrains.ddgridmanager.model.CoordinateTransformer;
 import com.unica.pregnantbrains.ddgridmanager.model.PointF;
 import com.unica.pregnantbrains.ddgridmanager.model.Token;
@@ -49,8 +56,35 @@ public final class TokenManipulationInteractionMode extends ZoomPanInteractionMo
 
     public void onLongPress(MotionEvent e) {
         if (currentToken != null) {
-            view.showContextMenu();
+            //view.showContextMenu();
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            view.getTokens().remove(currentToken);
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setMessage("Delete token?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent arg0) {
+        if (currentToken != null) {
+            view.getContext().startActivity(new Intent(view.getContext(), TokenEdit.class)
+                    .putExtra("size", currentToken.getSize())
+                    .putExtra("name", currentToken.getName()));
+        }
+        return true;
     }
 
     /**@Override

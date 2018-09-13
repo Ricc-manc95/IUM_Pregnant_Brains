@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -39,9 +40,8 @@ public final class GridView extends View {
     public float newLineStrokeWidth = .2f;
     private GridData mData;
 
-    public GridView(Context context/*, GridData data*/) {
+    public GridView(Context context) {
         super(context);
-
         //mData = data;
         //mActiveLines = data.mBackgroundLines;
 
@@ -51,10 +51,6 @@ public final class GridView extends View {
         paint.setAntiAlias(true);
         this.setTokenManipulationMode();
         this.setOnDragListener(mOnDrag);
-    }
-
-    public void setZoomPanMode() {
-        setGestureListener(new GridViewInteractionMode(this));
     }
 
     public void setTokenManipulationMode() {

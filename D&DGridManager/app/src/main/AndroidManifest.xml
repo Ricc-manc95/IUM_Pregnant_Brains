@@ -16,10 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CombatGrid"></activity>
-        <activity android:name=".PawnCreation"></activity>
-        <activity android:name=".ObstacleCreation"></activity>
-        <activity android:name=".AreaCreation"></activity>
+        <activity android:name=".CombatGrid" />
+        <activity android:name=".PawnCreation" />
+        <activity android:name=".ObstacleCreation" />
+        <activity android:name=".AreaCreation" />
+        <activity android:name=".TokenEdit"></activity>
     </application>
 
 </manifest>

@@ -23,11 +23,14 @@
     <style name="AppTheme.CreationBarTheme" parent="AppTheme">
         <item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
         <item name="android:textColorPrimary">@color/material_white_1000</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="colorButtonNormal">@color/colorPrimaryDark</item>
         <item name="android:textColor">@color/material_white_1000</item>
+    </style>
+
+    <style name="AppTheme.EditBarTheme" parent="AppTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
     </style>
 </resources>

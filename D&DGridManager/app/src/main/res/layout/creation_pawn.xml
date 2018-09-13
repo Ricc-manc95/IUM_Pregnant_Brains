@@ -13,7 +13,6 @@
     android:paddingRight="25dp"
     android:paddingTop="25dp">
 
-
     <TextView
         android:id="@+id/shape_pawn"
         android:layout_width="match_parent"
@@ -23,13 +22,11 @@
         android:text="Shape(Edges)"
         android:textColor="#000"
         tools:textColor="@android:color/black" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Insert number"
         android:inputType="number" />
-
     <TextView
         android:id="@+id/size_pawn"
         android:layout_width="match_parent"

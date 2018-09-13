@@ -3,10 +3,12 @@ package com.unica.pregnantbrains.ddgridmanager.model;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public final class Token implements Serializable{
+public final class Token implements Serializable {
     private static final long serialVersionUID = 5115756536497241452L;
 
     private PointF location = new PointF(0, 0);
@@ -101,5 +103,9 @@ public final class Token implements Serializable{
         r.updateBounds(new PointF(location.x - size/2, location.y - size/2));
         r.updateBounds(new PointF(location.x + size/2, location.y + size/2));
         return r;
+    }
+
+    public String getName () {
+        return this.name;
     }
 }
