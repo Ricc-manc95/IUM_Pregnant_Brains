@@ -40,6 +40,7 @@ public final class CombatGrid extends AppCompatActivity {
     private static final String TAG = CombatGrid.class.getSimpleName();
     private static final int NEW_PAWN_REQUEST = 1;
     private static final int NEW_OBSTACLE_REQUEST = 2;
+    private static final int NEW_AREA_REQUEST = 2;
     private static final int NEW_MAP_REQUEST = 1;
 
     private ActionMode mActionMode;
@@ -133,6 +134,7 @@ public final class CombatGrid extends AppCompatActivity {
                         return true;
                     case R.id.fab_area:
                         Toast.makeText(CombatGrid.this, "Add Area clicked", Toast.LENGTH_SHORT).show();
+                        newArea();
                         mSpeedDialView.close();
                         return true;
                     case R.id.fab_line:
@@ -388,6 +390,10 @@ public final class CombatGrid extends AppCompatActivity {
     private void newObstacle() {
         Intent newObstacleIntent = new Intent(this, ObstacleCreation.class);
         startActivityForResult(newObstacleIntent, NEW_OBSTACLE_REQUEST);
+    }
+    private void newArea() {
+        Intent newAreaIntent = new Intent(this, AreaCreation.class);
+        startActivityForResult(newAreaIntent, NEW_AREA_REQUEST);
     }
 
     private void setUpNavigationView() {
