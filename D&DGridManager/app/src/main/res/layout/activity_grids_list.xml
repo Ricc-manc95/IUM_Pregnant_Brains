@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/AppTheme.Fab"
+    android:background="@color/material_gray_300"
     tools:context="com.unica.pregnantbrains.ddgridmanager.GridsList">
 
     <include
@@ -24,7 +25,11 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/material_white_1000"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:dividerHeight="16dp">
 
     </ListView>
 
