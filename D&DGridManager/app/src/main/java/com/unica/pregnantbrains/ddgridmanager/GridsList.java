@@ -131,7 +131,7 @@ public class GridsList extends AppCompatActivity /*implements ActionMode.Callbac
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 setFilenamePreference(mSavedFiles.get(position));
                 startActivity(new Intent(GridsList.this, CombatGrid.class));
-
+                finish();
             }
         });
 
@@ -163,6 +163,8 @@ public class GridsList extends AppCompatActivity /*implements ActionMode.Callbac
 
     public void newGrid(View view) {
         Intent intent = new Intent(this, CombatGrid.class);
+        intent.putExtra("newMap", 1);
         startActivity(intent);
+        finish();
     }
 }

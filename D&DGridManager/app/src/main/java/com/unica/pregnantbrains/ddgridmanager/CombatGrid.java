@@ -39,7 +39,8 @@ public final class CombatGrid extends AppCompatActivity {
 
     private static final String TAG = CombatGrid.class.getSimpleName();
     private static final int NEW_PAWN_REQUEST = 1;
-    private static final int NEW_OBSTACLE_REQUEST=1;
+    private static final int NEW_OBSTACLE_REQUEST = 2;
+    private static final int NEW_MAP_REQUEST = 1;
 
     private ActionMode mActionMode;
     private DrawerLayout mDrawerLayout;
@@ -57,8 +58,6 @@ public final class CombatGrid extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combat_grid);
-
-        Intent intent = getIntent();
 
         mGridView = new GridView(this/*, mData*/);
 
@@ -163,7 +162,9 @@ public final class CombatGrid extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         // Attempt to load map data.  If we can't load map data, create a new map.
         String filename = sharedPreferences.getString("filename", null);
-        if (filename == null) {
+        Intent intent = getIntent();
+        int newMap = intent.getIntExtra("newMap", 0);
+        if (filename == null || newMap == NEW_MAP_REQUEST) {
             GridData.clear();
             mData = GridData.getInstance();
             mGridView.setData(mData);
@@ -399,6 +400,12 @@ public final class CombatGrid extends AppCompatActivity {
 
                 //Check wich item was being clicked
                 switch (menuItem.getItemId()){
+                    case R.id.nav_new:
+                        Intent i = new Intent(CombatGrid.this, CombatGrid.class);
+                        i.putExtra("newMap", 1);
+                        startActivity(i);
+                        finish();
+                        break;
                     case R.id.nav_save:
                         mDrawerLayout.closeDrawers();
                         AlertDialog.Builder builder = new AlertDialog.Builder(CombatGrid.this);
@@ -425,6 +432,7 @@ public final class CombatGrid extends AppCompatActivity {
                     case R.id.nav_load:
                         startActivity(new Intent(CombatGrid.this, GridsList.class));
                         mDrawerLayout.closeDrawers();
+                        finish();
                         break;
                     case R.id.nav_settings:
                         Toast.makeText(CombatGrid.this, "Settings clicked", Toast.LENGTH_SHORT).show();
