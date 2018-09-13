@@ -8,19 +8,21 @@
     android:theme="@style/AppTheme.Fab"
     tools:context="com.unica.pregnantbrains.ddgridmanager.GridsList">
 
-
-    <Button
-        android:id="@+id/button2"
+    <include
+        layout="@layout/navigation_action_bar"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_margin="16dp"
-        android:onClick="newGrid"
-        android:text="@string/new_grid_button"
-        android:textColorLink="@color/cardview_light_background"
-        android:theme="@style/AppTheme" />
-    
+        android:layout_height="wrap_content">
+
+    </include>
+
+    <include
+        layout="@layout/new_grid_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </include>
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -24,4 +24,9 @@
 
     <style name="CreationToolbarTheme" parent="AppTheme" />
 
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/material_white_1000</item>
+    </style>
+
 </resources>

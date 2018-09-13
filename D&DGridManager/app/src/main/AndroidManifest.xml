@@ -16,16 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CombatGrid">
-
-        </activity>
-        <activity android:name=".PawnCreation">
-
-        </activity>
-        <activity android:name=".ObstacleCreation">
-
-        </activity>
+        <activity android:name=".CombatGrid"></activity>
+        <activity android:name=".PawnCreation"></activity>
+        <activity android:name=".ObstacleCreation"></activity>
     </application>
-
 
 </manifest>
