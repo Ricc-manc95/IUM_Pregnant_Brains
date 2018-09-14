@@ -51,18 +51,18 @@ public class AreaCreation extends AppCompatActivity {
                 ListView lvc = (ListView) view.findViewById(R.id.colorlistview);
 
                 ArrayList<ColorPicker_Item> listitemar = new ArrayList<>();
-                ColorPicker_Item col1 = new ColorPicker_Item(R.drawable.pomodoro, "Pomodoro");
-                ColorPicker_Item col2 = new ColorPicker_Item(R.drawable.mandarino, "Mandarino");
+                ColorPicker_Item col1 = new ColorPicker_Item(R.drawable.pomodoro, "Tomato");
+                ColorPicker_Item col2 = new ColorPicker_Item(R.drawable.mandarino, "Tangerine");
                 ColorPicker_Item col3 = new ColorPicker_Item(R.drawable.banana, "Banana");
-                ColorPicker_Item col4 = new ColorPicker_Item(R.drawable.basilico, "Basilico");
-                ColorPicker_Item col5 = new ColorPicker_Item(R.drawable.salvia, "Salvia");
-                ColorPicker_Item col6 = new ColorPicker_Item(R.drawable.pavone, "Pavone");
-                ColorPicker_Item col7 = new ColorPicker_Item(R.drawable.mirtillo, "Mirtillo");
-                ColorPicker_Item col8 = new ColorPicker_Item(R.drawable.lavanda, "Lavanda");
-                ColorPicker_Item col9 = new ColorPicker_Item(R.drawable.vinaccia, "Vinaccia");
-                ColorPicker_Item col10 = new ColorPicker_Item(R.drawable.fenicottero, "Fenicottero");
-                ColorPicker_Item col11 = new ColorPicker_Item(R.drawable.grafite, "Grafite");
-                ColorPicker_Item col12 = new ColorPicker_Item(R.drawable.classic, "Colore predefinito");
+                ColorPicker_Item col4 = new ColorPicker_Item(R.drawable.basilico, "Basil");
+                ColorPicker_Item col5 = new ColorPicker_Item(R.drawable.salvia, "Sage");
+                ColorPicker_Item col6 = new ColorPicker_Item(R.drawable.pavone, "Peacock");
+                ColorPicker_Item col7 = new ColorPicker_Item(R.drawable.mirtillo, "Blueberry");
+                ColorPicker_Item col8 = new ColorPicker_Item(R.drawable.lavanda, "Lavender");
+                ColorPicker_Item col9 = new ColorPicker_Item(R.drawable.vinaccia, "Grape");
+                ColorPicker_Item col10 = new ColorPicker_Item(R.drawable.fenicottero, "Flamingo");
+                ColorPicker_Item col11 = new ColorPicker_Item(R.drawable.grafite, "Graphite");
+                ColorPicker_Item col12 = new ColorPicker_Item(R.drawable.classic, "Default color");
 
                 listitemar.add(col1);
                 listitemar.add(col2);
@@ -89,17 +89,17 @@ public class AreaCreation extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ColorPicker_Item element = cladar.getItem(which);
-                        AlertDialog.Builder builderInner = new AlertDialog.Builder(AreaCreation.this);
-                        builderInner.setMessage(element.getS());
+                        //AlertDialog.Builder builderInner = new AlertDialog.Builder(AreaCreation.this);
+                        //builderInner.setMessage(element.getS());
                         color = element.getS();
-                        builderInner.setTitle("Your Selected Item is");
-                        builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                       // builderInner.setTitle("Your Selected Item is");
+                        /*builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
-                        });
-                        builderInner.show();
+                        })*/;
+                        //builderInner.show();
                     }
                 });
                 builderSingle.show();
@@ -140,30 +140,31 @@ public class AreaCreation extends AppCompatActivity {
     }
     private int fromColorPicker(String color) {
         switch (color) {
-            case "Pomodoro":
+            case "Tomato":
                 return Color.rgb(220, 33, 39);
-            case "Mandarino":
+            case "tangerine":
                 return Color.rgb(244, 81, 30);
             case "Banana":
                 return Color.rgb(251, 215, 91);
-            case "Basilico":
+            case "Basil":
                 return Color.rgb(81, 183, 73);
-            case "Salvia":
+            case "Sage":
                 return Color.rgb(122, 231, 191);
-            case "Pavone":
+            case "Peacock":
                 return Color.rgb(84, 132, 237);
-            case "Mirtillo":
+            case "Blueberry":
                 return Color.rgb(63, 81, 181);
-            case "Lavanda":
+            case "Lavender":
                 return Color.rgb(164, 189, 252);
-            case "Vinaccia":
+            case "Grape":
                 return Color.rgb(142, 36, 170);
-            case "Fenicottero":
+            case "Flamingo":
                 return Color.rgb(230, 124, 115);
-            case "Grafite":
+            case "Graphite":
                 return Color.rgb(97, 97, 97);
             default:
                 return Color.rgb(164, 189, 252);
         }
     }
+
 }
